@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Final Project, Part I
 If you have any questions, come to Office Hours on Wednesday from 7-9pm at the Link *or* post on Lore and we'll answer them there.
 
@@ -55,3 +56,9 @@ Also, remember to add your group leader to the repo, or we won't be able to see 
 And remember to add your friendly consultant regardless of group =).
 
 - Kirill Klimuk (@kklimuk)
+=======
+GarageBand
+==========
+
+An in browser sound editor
+>>>>>>> 50d98ef1e8c6862689d68d826311b4de5f58d01d
