@@ -55,7 +55,4 @@ function initSound(arrayBuffer) {
 
 
   }
-  window.addEventListener('filesLoaded', function() {
-    console.log('Yay!');
-  });
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
