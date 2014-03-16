@@ -29,6 +29,8 @@ function initSound(arrayBuffer) {
 // Read in sound files and add them to the list
  function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
+    var a = new CustomEvent('filesLoaded', {detail: files});
+    window.dispatchEvent(a);
 
     // files is a FileList of File objects. List some properties.
     var output = [];
@@ -53,5 +55,7 @@ function initSound(arrayBuffer) {
 
 
   }
-
+  window.addEventListener('filesLoaded', function() {
+    console.log('Yay!');
+  });
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
