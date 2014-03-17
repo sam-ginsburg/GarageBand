@@ -2,9 +2,123 @@
 
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
-// function onInitFs(fs) {
-//   console.log('Opened file system: ' + fs.name);
-// }
+var myGrantedBytes = null;
+var fileListToSave = null;
+var filesOut = null;
+
+window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
+  myGrantedBytes = grantedBytes;
+  window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
+}, function(e) {
+  console.log('Error', e);
+});
+
+(function() {
+  function FileSaver() {
+    this.listener = this.save.bind(this);
+    window.addEventListener('filesLoaded', this.listener);
+  }
+
+ FileSaver.prototype.save = function(event) {
+    var filesList = event.detail;
+    fileListToSave = filesList;
+    console.log("length: " + filesList.length);
+    window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
+
+  };
+
+  var filesaverobj = new FileSaver();
+
+})();
+
+function toSaveFiles(fs){
+  for (var i = 0, file; file = fileListToSave[i]; ++i) {
+    console.log("saving file " + i);
+
+    (function(f) {
+      fs.root.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
+        console.log(f.name);
+        fileEntry.createWriter(function(fileWriter) {
+            fileWriter.write(f); // Note: write() can take a File or Blob object.
+          }, errorHandler);
+      }, errorHandler);
+    })(file);
+  }
+
+  //console.log(fileListToSave);
+  var a = new CustomEvent('filesSaved', {detail: fileListToSave});
+  window.dispatchEvent(a);
+
+  var c = new CustomEvent('requestFiles', {detail: fileListToSave});
+  window.dispatchEvent(c);
+
+}
+
+(function() {
+  function FileGetter() {
+    this.listener = this.getAll.bind(this);
+    window.addEventListener('requestFiles', this.listener);
+  }
+
+ FileGetter.prototype.getAll = function(event) {
+    window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFiles, errorHandler);
+  };
+
+  var filegetterobj = new FileGetter();
+
+})();
+
+function toArray(list) {
+  return Array.prototype.slice.call(list || [], 0);
+}
+
+function toGetFiles(fs){
+
+  var dirReader = fs.root.createReader();
+
+  var entries = [];
+
+  // Call the reader.readEntries() until no more results are returned.
+  var readEntries = function() {
+     dirReader.readEntries (function(results) {
+      // if (!results.length) {
+      //   //listResults(entries.sort());
+      // } else {
+        entries = entries.concat(toArray(results));
+        console.log(results);
+        console.log(entries);
+        filesOut = entries;
+        //readEntries();
+        var b = new CustomEvent('filesPulled', {detail: filesOut});
+        window.dispatchEvent(b); // this is temporary until I can get a damn promise to work
+      //}
+    }, errorHandler);
+
+    return new Promise(function(resolve, reject) {
+      if(entries.length !== 0){
+        resolve("IT WORKED");
+      }
+      else {
+        reject(Error("It broke."));
+//        console.log(entries);
+      }
+    });
+
+  };
+
+  readEntries().then(function(result) {
+  console.log(result); // "Stuff worked!"
+}, function(err) {
+  console.log(err); // Error: "It broke"
+}); // Start reading dirs.
+  // console.log(entries);
+  // //filesOut = entries;
+  // console.log(filesOut);
+
+  // var b = new CustomEvent('filesPulled', {detail: filesOut});
+  // window.dispatchEvent(b);
+
+}
 
 function onInitFs(fs) {
 
@@ -39,11 +153,6 @@ function onInitFs(fs) {
 
       fileWriter.seek(fileWriter.length); // Start write position at EOF.
 
-      // Create a new Blob and write it to log.txt.
-      //var blob = new Blob(['This text is read from a file in the local filesystem.'], {type: 'text/plain'});
-
-      //fileWriter.write(blob);
-
     }, errorHandler);
 
 
@@ -63,11 +172,7 @@ function onInitFs(fs) {
 
 }
 
-window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
-  window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
-}, function(e) {
-  console.log('Error', e);
-});
+
 
 function errorHandler(e) {
   var msg = '';
