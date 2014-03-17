@@ -2,9 +2,53 @@
 
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
+var myGrantedBytes = null;
+var fileListToSave = null;
+
+window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
+  myGrantedBytes = grantedBytes;
+  window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
+}, function(e) {
+  console.log('Error', e);
+});
+
 // function onInitFs(fs) {
 //   console.log('Opened file system: ' + fs.name);
 // }
+
+(function() {
+  function FileSaver() {
+    this.listener = this.save.bind(this);
+    window.addEventListener('filesLoaded', this.listener);
+  }
+
+ FileSaver.prototype.save = function(event) {
+    var filesList = event.detail;
+    fileListToSave = filesList;
+    console.log("length: " + filesList.length);
+    window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
+
+  };
+
+  var filesaverobj = new FileSaver();
+
+})();
+
+function toSaveFiles(fs){
+  for (var i = 0, file; file = fileListToSave[i]; ++i) {
+    console.log("saving file " + i);
+
+    (function(f) {
+      fs.root.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
+        console.log(f.name);
+        fileEntry.createWriter(function(fileWriter) {
+            fileWriter.write(f); // Note: write() can take a File or Blob object.
+          }, errorHandler);
+      }, errorHandler);
+    })(file);
+  }
+}
+
 
 function onInitFs(fs) {
 
@@ -63,11 +107,7 @@ function onInitFs(fs) {
 
 }
 
-window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
-  window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
-}, function(e) {
-  console.log('Error', e);
-});
+
 
 function errorHandler(e) {
   var msg = '';
