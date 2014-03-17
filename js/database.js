@@ -12,10 +12,6 @@ window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(
   console.log('Error', e);
 });
 
-// function onInitFs(fs) {
-//   console.log('Opened file system: ' + fs.name);
-// }
-
 (function() {
   function FileSaver() {
     this.listener = this.save.bind(this);
@@ -47,6 +43,10 @@ function toSaveFiles(fs){
       }, errorHandler);
     })(file);
   }
+
+  var a = new CustomEvent('filesSaved', {detail: fileListToSave});
+  window.dispatchEvent(a);
+
 }
 
 
@@ -82,11 +82,6 @@ function onInitFs(fs) {
     fileEntry.createWriter(function(fileWriter) {
 
       fileWriter.seek(fileWriter.length); // Start write position at EOF.
-
-      // Create a new Blob and write it to log.txt.
-      //var blob = new Blob(['This text is read from a file in the local filesystem.'], {type: 'text/plain'});
-
-      //fileWriter.write(blob);
 
     }, errorHandler);
 
