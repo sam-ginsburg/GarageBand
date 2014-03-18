@@ -21,6 +21,7 @@ window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(
 
  FileSaver.prototype.save = function(event) {
     var filesList = event.detail;
+    console.log(filesList);
     fileListToSave = filesList;
     console.log("length: " + filesList.length);
     window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
@@ -202,7 +203,7 @@ function errorHandler(e) {
 }
 
 
-var Database = {
+var FileSystemMod = {
 	init: function() {
 	},
 
