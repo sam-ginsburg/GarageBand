@@ -8,3 +8,11 @@ border-color: #5bc0de;
 	margin-right:40%;
 	margin-bottom:10px;
 }
+
+.glyphicon-play-circle:hover{
+  color: #66B005
+}
+
+.glyphicon-stop:hover{
+  color: #DB0202;
+}
