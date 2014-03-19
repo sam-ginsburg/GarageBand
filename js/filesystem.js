@@ -27,9 +27,7 @@ var FileSystem = {
 
 	save: function(event) {
 		var filesList = event.detail;
-		console.log(filesList);
 		fileListToSave = filesList;
-		console.log("length: " + filesList.length);
 		window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
 	},
 
@@ -78,12 +76,9 @@ function toArray(list) {
 
 function toSaveFiles(fs){
   for (var i = 0, file; file = fileListToSave[i]; ++i) {
-    console.log("saving file " + i);
 
     (function(f) {
       fs.root.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
-        console.log(f.fileEntry);
-        // console.log(f.buffer.type);
         fileEntry.createWriter(function(fileWriter) {
             // var buffs = [];
             // buffs.push(f.buffer);
@@ -93,12 +88,8 @@ function toSaveFiles(fs){
       }, errorHandler);
     })(file);
   }
-  console.log(fileListToSave);
   var a = new CustomEvent('filesSaved', {detail: fileListToSave});
   window.dispatchEvent(a);
-
-  // var c = new CustomEvent('requestFiles', {detail: fileListToSave});
-  // window.dispatchEvent(c);
 
 }
 
@@ -111,44 +102,15 @@ function toGetFiles(fs){
   // Call the reader.readEntries() until no more results are returned.
   var readEntries = function() {
      dirReader.readEntries (function(results) {
-      // if (!results.length) {
-      //   //listResults(entries.sort());
-      // } else {
-        entries = entries.concat(toArray(results));
-        console.log(results);
-        console.log(entries);
-        filesOut = convertToObjs(entries);
-        // filesOut = entries;
-        //readEntries();
-        // var b = new CustomEvent('filesPulled', {detail: filesOut});
-        // window.dispatchEvent(b); // this is temporary until I can get a damn promise to work
-      //}
-    }, errorHandler);
 
-//     return new Promise(function(resolve, reject) {
-//       if(entries.length !== 0){
-//         resolve("IT WORKED");
-//       }
-//       else {
-//         reject(Error("It broke."));
-// //        console.log(entries);
-//       }
-//     });
+        entries = entries.concat(toArray(results));
+        filesOut = convertToObjs(entries);
+
+    }, errorHandler);
 
   };
 
   readEntries();
-//   readEntries().then(function(result) {
-//   console.log(result); // "Stuff worked!"
-// }, function(err) {
-//   console.log(err); // Error: "It broke"
-// }); // Start reading dirs.
-  // console.log(entries);
-  // //filesOut = entries;
-  // console.log(filesOut);
-
-  // var b = new CustomEvent('filesPulled', {detail: filesOut});
-  // window.dispatchEvent(b);
 
 }
 
@@ -162,9 +124,8 @@ function convertToObjs(fileentries){
 			var reader = new FileReader();
 
 			reader.onloadend = function(e) {
-				console.log(file.name);
+				// console.log(file.name);
 				res.push({name: file.name, buffer: this.result});
-				console.log(res);
 				if(res.length == fileentries.length){
 					filesOut = res;
 					var d = new CustomEvent('filesPulled', {detail: filesOut});
