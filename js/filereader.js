@@ -4,6 +4,8 @@ var sources = [];
 var audioBuffer = null;
 var buffers = [];
 
+FileSystem.init();
+
 function playSound(index) {
   // source is global so we can call .noteOff() later.
   stopSound();
@@ -43,6 +45,7 @@ function initSound(arrayBuffer) {
 function handleFileSelect(evt) {
   var files = evt.target.files; // FileList object
   files = Array.prototype.filter.call(files, function filterer(f){console.log(f.type); if(f.type == "audio/mp3" || f.type == "audio/ogg" || f.type == "audio/wav") return true; else{return false;}});
+  console.log("LOOK AT THIS", files);
   var a = new CustomEvent('filesLoaded', {detail: files});
   window.dispatchEvent(a);
 
