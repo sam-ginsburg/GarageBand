@@ -40,15 +40,14 @@ function initSound(arrayBuffer) {
 }
 
 // Read in sound files and add them to the list
-
 function handleFileSelect(evt) {
   var files = evt.target.files; // FileList object
+  files = Array.prototype.filter.call(files, function filterer(f){console.log(f.type); if(f.type == "audio/mp3" || f.type == "audio/ogg" || f.type == "audio/wav") return true; else{return false;}});
   var a = new CustomEvent('filesLoaded', {detail: files});
   window.dispatchEvent(a);
 
   // files is a FileList of File objects. List some properties.
   for (var i = 0, f; f = files[i]; i++) {
-    if(f.type == "audio/mp3" || f.type == "audio/ogg" || f.type == "audio/wav"){
       var output = [];
       var reader = new FileReader();
       output.push('<td><strong>', escape(f.name), '</strong> ','</td>');
@@ -63,7 +62,6 @@ function handleFileSelect(evt) {
       tableItems += '<td><span onClick = "playSound(' + buffers.length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
       document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
-    }
   }
 
 }
