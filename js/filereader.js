@@ -47,25 +47,48 @@ function handleFileSelect(evt) {
   window.dispatchEvent(a);
 
   // files is a FileList of File objects. List some properties.
-  var output = [];
   for (var i = 0, f; f = files[i]; i++) {
-    var reader = new FileReader();
-    output.push('<td><strong>', escape(f.name), '</strong> ','</td>');
+    if(f.type == "audio/mp3" || f.type == "audio/ogg" || f.type == "audio/wav"){
+      var output = [];
+      var reader = new FileReader();
+      output.push('<td><strong>', escape(f.name), '</strong> ','</td>');
 
-    reader.onload = function(e) {
-     initSound(this.result);
-    };
+      reader.onload = function(e) {
+       initSound(this.result);
+      };
 
-    reader.readAsArrayBuffer(f);
+      reader.readAsArrayBuffer(f);
+
+      var tableItems = output.join('');
+      tableItems += '<td><span onClick = "playSound(' + buffers.length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
+      tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
+      document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
+    }
+  }
+
+}
+
+ function loadFromFileSystem(evt) {
+  var arrayAndName = evt.detail;
+  for (var i = 0, f; f = arrayAndName[i]; i++) {
+    var output = [];
+    var name = f.name;
+
+    console.log(name);
+    var arrayBuffer = f.buffer;
+    output.push('<td><strong>', name, '</strong> ','</td>');
+
+   
+    initSound(arrayBuffer);
 
     var tableItems = output.join('');
     tableItems += '<td><span onClick = "playSound(' + buffers.length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
-    document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
+    document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
 
   }
 
    
  }
  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
+ window.addEventListener('filesPulled', loadFromFileSystem, false);
