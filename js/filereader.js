@@ -62,7 +62,7 @@ function handleFileSelect(evt) {
       reader.readAsArrayBuffer(f);
 
       var tableItems = output.join('');
-      tableItems += '<td><span onClick = "playSound(' + buffers.length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
+      tableItems += '<td><span onClick = "playSound(' + (buffers.length + i) + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
       document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
@@ -83,7 +83,7 @@ function handleFileSelect(evt) {
     initSound(arrayBuffer);
 
     var tableItems = output.join('');
-    tableItems += '<td><span onClick = "playSound(' + buffers.length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
+    tableItems += '<td><span onClick = "playSound(' + (buffers.length + i) + ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
     document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
 
