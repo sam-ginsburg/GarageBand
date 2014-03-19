@@ -82,8 +82,12 @@ function toSaveFiles(fs){
 
     (function(f) {
       fs.root.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
-        console.log(f.name);
+        console.log(f.fileEntry);
+        // console.log(f.buffer.type);
         fileEntry.createWriter(function(fileWriter) {
+            // var buffs = [];
+            // buffs.push(f.buffer);
+            // var blob = new Blob(buffs);
             fileWriter.write(f); // Note: write() can take a File or Blob object.
           }, errorHandler);
       }, errorHandler);
@@ -113,30 +117,32 @@ function toGetFiles(fs){
         entries = entries.concat(toArray(results));
         console.log(results);
         console.log(entries);
-        filesOut = entries;
+        filesOut = convertToObjs(entries);
+        // filesOut = entries;
         //readEntries();
-        var b = new CustomEvent('filesPulled', {detail: filesOut});
-        window.dispatchEvent(b); // this is temporary until I can get a damn promise to work
+        // var b = new CustomEvent('filesPulled', {detail: filesOut});
+        // window.dispatchEvent(b); // this is temporary until I can get a damn promise to work
       //}
     }, errorHandler);
 
-    return new Promise(function(resolve, reject) {
-      if(entries.length !== 0){
-        resolve("IT WORKED");
-      }
-      else {
-        reject(Error("It broke."));
-//        console.log(entries);
-      }
-    });
+//     return new Promise(function(resolve, reject) {
+//       if(entries.length !== 0){
+//         resolve("IT WORKED");
+//       }
+//       else {
+//         reject(Error("It broke."));
+// //        console.log(entries);
+//       }
+//     });
 
   };
 
-  readEntries().then(function(result) {
-  console.log(result); // "Stuff worked!"
-}, function(err) {
-  console.log(err); // Error: "It broke"
-}); // Start reading dirs.
+  readEntries();
+//   readEntries().then(function(result) {
+//   console.log(result); // "Stuff worked!"
+// }, function(err) {
+//   console.log(err); // Error: "It broke"
+// }); // Start reading dirs.
   // console.log(entries);
   // //filesOut = entries;
   // console.log(filesOut);
@@ -144,4 +150,28 @@ function toGetFiles(fs){
   // var b = new CustomEvent('filesPulled', {detail: filesOut});
   // window.dispatchEvent(b);
 
+}
+
+function convertToObjs(fileentries){
+	var res = [];
+
+	for(var i = 0; i<fileentries.length; i++){
+		var curfile = fileentries[i];
+
+		curfile.file(function(file) {
+			var reader = new FileReader();
+
+			reader.onloadend = function(e) {
+				console.log(file.name);
+				res.push({name: file.name, buffer: this.result});
+				console.log(res);
+				if(res.length == fileentries.length){
+					var d = new CustomEvent('filesPulled', {detail: res});
+					window.dispatchEvent(d);
+				}
+			};
+
+			reader.readAsArrayBuffer(file);
+		}, errorHandler);
+	}
 }

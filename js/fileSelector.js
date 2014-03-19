@@ -20,7 +20,7 @@ var counter = 0;
       output.push({name: f.name, buffer: theBuffer.target.result});
       counter++;
       if(counter == files.length){
-        var a = new CustomEvent('filesLoaded', {detail: files});//output
+        var a = new CustomEvent('filesLoaded', {detail: output});//output or files
         console.log("filesLoaded event fired");
         window.dispatchEvent(a);
       }
