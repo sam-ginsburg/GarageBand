@@ -166,7 +166,8 @@ function convertToObjs(fileentries){
 				res.push({name: file.name, buffer: this.result});
 				console.log(res);
 				if(res.length == fileentries.length){
-					var d = new CustomEvent('filesPulled', {detail: res});
+					filesOut = res;
+					var d = new CustomEvent('filesPulled', {detail: filesOut});
 					window.dispatchEvent(d);
 				}
 			};
