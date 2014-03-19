@@ -1,68 +1,107 @@
-(function() {
-  var context,
-      soundSource,
-      soundBuffer,
-      url = './test.mp3';
 
-  // Step 1 - Initialise the Audio Context
-  // There can be only one!
-  function init() {
-    if (typeof AudioContext !== "undefined") {
-      context = new AudioContext();
-    } else if (typeof webkitAudioContext !== "undefined") {
-      context = new webkitAudioContext();
-    } else {
-      throw new Error('AudioContext not supported. :(');
-    }
-  }
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = [];
+  this.loadCount = 0;
+}
 
-  // Step 2: Load our Sound using XHR
-  function startSound() {
-    // Note: this loads asynchronously
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.responseType = "arraybuffer";
-    // Our asynchronous callback
-    request.onload = function() {
-        var audioData = request.response;
-        audioGraph(audioData);
-    };
-    request.send();
-  }
+BufferLoader.prototype.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
 
-  // Finally: tell the source when to start
-  function playSound() {
-    // play the source now
-    soundSource.noteOn(context.currentTime);
-  }
+  var loader = this;
 
-  function stopSound() {
-    // stop the source now
-    soundSource.noteOff(context.currentTime);
-  }
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader.bufferList[index] = buffer;
+        if (++loader.loadCount == loader.urlList.length)
+          loader.onload(loader.bufferList);
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  };
 
-  // Events for the play/stop bottons
-  document.querySelector('.play').addEventListener('click', startSound);
-  document.querySelector('.stop').addEventListener('click', stopSound);
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  };
 
-  // This is the code we are interested in
-  function audioGraph(audioData) {
-    // create a sound source
-    soundSource = context.createBufferSource();
+  request.send();
+};
 
-    // The Audio Context handles creating source buffers from raw binary
-    soundBuffer = context.createBuffer(audioData, true/* make mono */);
+BufferLoader.prototype.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i)
+  this.loadBuffer(this.urlList[i], i);
+};
+
+var context;
+var bufferLoader;
+
+function init() {
+  context = new webkitAudioContext();
+
+  bufferLoader = new BufferLoader(
+    context,
+    [
+      './test3.mp3',
+      './test2.mp3',
+    ],
+    finishedLoading
+    );
+
+  bufferLoader.load();
+}
+
+var sources = [];
+var myBufferList;
+
+function finishedLoading(bufferList) {
+  myBufferList = bufferList;
+  // Create two sources and play them both together.
+  var source1 = context.createBufferSource();
+  var source2 = context.createBufferSource();
+  source1.buffer = bufferList[0];
+  source2.buffer = bufferList[1];
+
+  source1.connect(context.destination);
+  source2.connect(context.destination);
   
-    // Add the buffered data to our object
-    soundSource.buffer = soundBuffer;
+  sources.push(source1);
+  sources.push(source2);
+}
 
-    // Plug the cable from one thing to the other
-    soundSource.connect(context.destination);
+var currentSongIndex = -1;
 
-    // Finally
-    playSound(soundSource);
+function stopSound(){
+  // We have to remove and recreate the buffer source to play again
+  if(currentSongIndex != -1){
+    sources[currentSongIndex].stop();
+    sources[currentSongIndex] = context.createBufferSource();
+    sources[currentSongIndex].buffer = myBufferList[currentSongIndex];
+    sources[currentSongIndex].connect(context.destination);
   }
 
-  init();
+  currentSongIndex = -1;
+  return -1;
+}
 
-}());
+function playSound(index){
+  stopSound();
+  currentSongIndex = index;
+  sources[index].start(0);
+  return index;
+}
+
+init();
