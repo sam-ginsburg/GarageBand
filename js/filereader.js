@@ -11,18 +11,19 @@ function playSound(index) {
   
   // source is global so we can call .noteOff() later.
   if(sources[index]){
-    stopSound();
+    stopSound(index, true);
   }
   
   if(sources[index]){
-    sources[index].noteOn(0); // Play immediately.
     sourceIndex = index;
+    sources[index].noteOn(0); // Play immediately.
+    
   }
   return index;
 }
 
-function stopSound(index) {
-  if (sourceIndex != -1 && index == sourceIndex) {
+function stopSound(index, bool) {
+  if (sourceIndex != -1 && (index == sourceIndex || bool)) {
     sources[sourceIndex].noteOff(0);
     sources[sourceIndex] = context.createBufferSource();
     sources[sourceIndex].buffer = buffers[sourceIndex];
