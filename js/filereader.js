@@ -22,7 +22,7 @@ function playSound(index) {
 }
 
 function stopSound(index) {
-  if (sourceIndex != -1 ) {
+  if (sourceIndex != -1 && index == sourceIndex) {
     sources[sourceIndex].noteOff(0);
     sources[sourceIndex] = context.createBufferSource();
     sources[sourceIndex].buffer = buffers[sourceIndex];
