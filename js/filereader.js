@@ -10,7 +10,9 @@ function playSound(index) {
   // source is global so we can call .noteOff() later.
   stopSound();
   sourceIndex = index;
-  sources[index].noteOn(0); // Play immediately.
+  if(sources[index]){
+    sources[index].noteOn(0); // Play immediately.
+  }
   return index;
 }
 
