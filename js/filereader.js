@@ -3,6 +3,7 @@ var sourceIndex = -1;
 var sources = [];
 var audioBuffer = null;
 var buffers = [];
+var length = 0;
 
 FileSystem.init();
 
@@ -14,15 +15,15 @@ function playSound(index) {
   return index;
 }
 
-function stopSound() {
-  if (sourceIndex != -1) {
+function stopSound(index) {
+  if (sourceIndex != -1 ) {
     sources[sourceIndex].noteOff(0);
     sources[sourceIndex] = context.createBufferSource();
     sources[sourceIndex].buffer = buffers[sourceIndex];
     sources[sourceIndex].loop = false;
     sources[sourceIndex].connect(context.destination);
+    sourceIndex = -1;
   }
-  sourceIndex = -1;
   return -1;
 }
 
@@ -45,7 +46,6 @@ function initSound(arrayBuffer) {
 function handleFileSelect(evt) {
   var files = evt.target.files; // FileList object
   files = Array.prototype.filter.call(files, function filterer(f){console.log(f.type); if(f.type == "audio/mp3" || f.type == "audio/ogg" || f.type == "audio/wav") return true; else{return false;}});
-  console.log("LOOK AT THIS", files);
   var a = new CustomEvent('filesLoaded', {detail: files});
   window.dispatchEvent(a);
 
@@ -62,8 +62,11 @@ function handleFileSelect(evt) {
       reader.readAsArrayBuffer(f);
 
       var tableItems = output.join('');
-      tableItems += '<td><span onClick = "playSound(' + (buffers.length + i) + ')" class="glyphicon glyphicon-play-circle"></span></td>';
-      tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
+
+      console.log(buffers.length);
+      tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
+      tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
+      length++;
       document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
 
@@ -83,8 +86,9 @@ function handleFileSelect(evt) {
     initSound(arrayBuffer);
 
     var tableItems = output.join('');
-    tableItems += '<td><span onClick = "playSound(' + (buffers.length + i) + ')" class="glyphicon glyphicon-play-circle"></span></td>';
-    tableItems += '<td><span onClick = "stopSound()" class="glyphicon glyphicon-stop"></span></td>';
+    tableItems += '<td><span onClick = "playSound(' + length+ ')" class="glyphicon glyphicon-play-circle"></span></td>';
+    tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
+    length++;
     document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
 
   }
