@@ -66,10 +66,9 @@ function handleFileSelect(evt) {
       length++;
       document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
-
 }
 
- function loadFromFileSystem(evt) {
+function loadFromFileSystem(evt) {
   var arrayAndName = evt.detail;
   for (var i = 0, f; f = arrayAndName[i]; i++) {
     var output = [];
@@ -85,9 +84,8 @@ function handleFileSelect(evt) {
     tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
     length++;
     document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
-
   }
 }
 
- document.getElementById('files').addEventListener('change', handleFileSelect, false);
- window.addEventListener('filesPulled', loadFromFileSystem, false);
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+window.addEventListener('filesPulled', loadFromFileSystem, false);
