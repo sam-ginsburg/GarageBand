@@ -1,23 +1,15 @@
 var context = new window.webkitAudioContext();
-var sourceIndex = -1;
-var sources = [];
+var sourceIndex = -1, length = 0;
+var sources = [], buffers = [];
 var audioBuffer = null;
-var buffers = [];
-var length = 0;
-
 FileSystem.init();
 
-function playSound(index) {
-  
+function playSound(index) { 
   // source is global so we can call .noteOff() later.
   if(sources[index]){
     stopSound(index, true);
-  }
-  
-  if(sources[index]){
     sourceIndex = index;
     sources[index].noteOn(0); // Play immediately.
-    
   }
   return index;
 }
@@ -67,9 +59,7 @@ function handleFileSelect(evt) {
       };
 
       reader.readAsArrayBuffer(f);
-
       var tableItems = output.join('');
-
       console.log(buffers.length);
       tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
@@ -89,9 +79,7 @@ function handleFileSelect(evt) {
     var arrayBuffer = f.buffer;
     output.push('<td><strong>', name, '</strong> ','</td>');
 
-   
     initSound(arrayBuffer);
-
     var tableItems = output.join('');
     tableItems += '<td><span onClick = "playSound(' + length+ ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
@@ -99,8 +87,7 @@ function handleFileSelect(evt) {
     document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
 
   }
+}
 
-   
- }
  document.getElementById('files').addEventListener('change', handleFileSelect, false);
  window.addEventListener('filesPulled', loadFromFileSystem, false);
