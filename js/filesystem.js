@@ -1,3 +1,4 @@
+window.FileSystem = (function(){
 'use strict';
 
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
@@ -17,7 +18,7 @@ var FileSystem = {
 	init: function() {
 		window.addEventListener('filesLoaded', this.save);
 		window.addEventListener('requestFiles', this.load);
-		window.addEventListener('filesPulled', this.printfiles)
+		window.addEventListener('filesPulled', this.printfiles);
 		this.load();
 	},
 
@@ -137,3 +138,6 @@ function convertToObjs(fileentries){
 		}, errorHandler);
 	}
 }
+
+return FileSystem;
+})();
