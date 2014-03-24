@@ -1,46 +1,79 @@
 window.FileSystem = (function(){
-'use strict';
+	'use strict';
 
-window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
-var myGrantedBytes = null;
-var fileListToSave = null;
-var filesOut = null;
+	var myGrantedBytes = null;
+	var fileListToSave = null;
+	var filesOut = null;
+	var fileToRemove = null;
+	var projectName = null;
+	//var currentProject;
 
-window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
-	myGrantedBytes = grantedBytes;
-	window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
-}, function(e) {
-	console.log('Error', e);
-});
-
-var FileSystem = {
-	init: function() {
-		window.addEventListener('filesLoaded', this.save);
-		window.addEventListener('requestFiles', this.load);
-		window.addEventListener('filesPulled', this.printfiles);
-		this.load();
-	},
-
-	load: function(){
-		window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFiles, errorHandler);
-	},
-
-	save: function(event) {
-		var filesList = event.detail;
-		fileListToSave = filesList;
-		window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
-	},
-
-	remove: function() {
-	},
-
-	printfiles: function(event) {
-		console.log(event.detail);
+	if(window.currentProject === undefined){
+		window.currentProject = null;
 	}
-};
 
-function onInitFs(fs) {
+	window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
+		myGrantedBytes = grantedBytes;
+		window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
+	}, function(e) {
+		console.log('Error', e);
+	});
+
+	var FileSystem = {
+
+		createProject: function(event){
+			projectName = event.detail;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateProject, errorHandler);
+		},
+
+		init: function() {
+			this.getFirstProject();
+
+			window.addEventListener('filesLoaded', this.save);
+			window.addEventListener('requestFiles', this.load);
+			window.addEventListener('filesPulled', this.printfiles);
+			window.addEventListener('deleteFile', this.remove);
+			window.addEventListener('projectFound', this.load);
+			window.addEventListener('projectCreated', this.getProject);
+
+			//window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateDirectory, errorHandler);
+
+			//this.load();
+		},
+
+		getFirstProject: function(){
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFirstProject, errorHandler);
+		},
+
+		getProject: function(event){
+			projectName = event.detail;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetProject, errorHandler);
+		},
+
+		load: function(){
+			console.log("loading");
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFiles, errorHandler);
+		},
+
+		save: function(event) {
+			var filesList = event.detail;
+			fileListToSave = filesList;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
+		},
+
+		remove: function(event) {
+			fileToRemove = event.detail;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveFile, errorHandler);
+		},
+
+		printfiles: function(event) {
+			console.log(event.detail);
+		}
+	};
+
+	function onInitFs(fs) {
 // do nothing
 }
 
@@ -75,43 +108,111 @@ function toArray(list) {
 	return Array.prototype.slice.call(list || [], 0);
 }
 
-function toSaveFiles(fs){
-  for (var i = 0, file; file = fileListToSave[i]; ++i) {
+function setProject(dirEntry){
+	window.currentProject = dirEntry;
+}
 
-    (function(f) {
-      fs.root.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
-        fileEntry.createWriter(function(fileWriter) {
+function toCreateDefaultDirectory(fs){
+	fs.root.getDirectory('DefaultProject', {create: true, exclusive: true}, function(dirEntry) {
+		setProject(dirEntry);
+		FileSystem.getFirstProject();
+  }, errorHandler);
+}
+
+function toCreateProject(fs){
+	fs.root.getDirectory(projectName, {create: true, exclusive: true}, function(dirEntry) {
+		setProject(dirEntry);
+		window.dispatchEvent(new CustomEvent('projectCreated', {detail: dirEntry.name}));
+  }, errorHandler);
+}
+
+function toSaveFiles(fs){
+	for (var i = 0, file; file = fileListToSave[i]; ++i) {
+
+		(function(f) {
+			currentProject.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {//fs.root.
+				fileEntry.createWriter(function(fileWriter) {
             // var buffs = [];
             // buffs.push(f.buffer);
             // var blob = new Blob(buffs);
             fileWriter.write(f); // Note: write() can take a File or Blob object.
-          }, errorHandler);
-      }, errorHandler);
-    })(file);
-  }
-  var a = new CustomEvent('filesSaved', {detail: fileListToSave});
-  window.dispatchEvent(a);
+        }, errorHandler);
+			}, errorHandler);
+		})(file);
+	}
+	var a = new CustomEvent('filesSaved', {detail: fileListToSave});
+	window.dispatchEvent(a);
 
+}
+
+function toRemoveFile(fs){
+	fs.root.getFile(fileToRemove.name, {create: false}, function(fileEntry) {
+
+    fileEntry.remove(function() {
+      console.log('File removed.');
+      window.dispatchEvent(new CustomEvent('fileDeleted', {detail: fileEntry}));
+    }, errorHandler);
+
+  }, errorHandler);
 }
 
 function toGetFiles(fs){
 
-  var dirReader = fs.root.createReader();
+	var dirReader = currentProject.createReader();//fs.root.
 
-  var entries = [];
+	var entries = [];
 
   // Call the reader.readEntries() until no more results are returned.
   var readEntries = function() {
-     dirReader.readEntries (function(results) {
+	dirReader.readEntries (function(results) {
 
-        entries = entries.concat(toArray(results));
-        filesOut = convertToObjs(entries);
+		entries = entries.concat(toArray(results));
+		filesOut = convertToObjs(entries);
 
-    }, errorHandler);
+	}, errorHandler);
 
   };
 
   readEntries();
+
+}
+
+function toGetFirstProject(fs){
+
+	var dirReader = fs.root.createReader();//fs.root.
+
+	var entries = [];
+
+  // Call the reader.readEntries() until no more results are returned.
+  var readEntries = function() {
+	dirReader.readEntries (function(results) {
+
+		entries = entries.concat(toArray(results));
+		currentProject = entries[0];
+
+		if(currentProject !== undefined){
+			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
+		}
+		else{
+			FileSystem.createProject({detail: "DefaultProject"});
+		}
+
+	}, errorHandler);
+
+  };
+
+  readEntries();
+
+}
+
+function toGetProject(fs){
+
+	fs.root.getDirectory(projectName, {create: false}, function(dirEntry) {
+		currentProject = dirEntry;
+		if(currentProject !== null){
+			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
+		}
+  }, errorHandler);
 
 }
 
@@ -120,6 +221,9 @@ function convertToObjs(fileentries){
 
 	for(var i = 0; i<fileentries.length; i++){
 		var curfile = fileentries[i];
+
+		//if(curfile.)
+		console.log(typeof curfile);
 
 		curfile.file(function(file) {
 			var reader = new FileReader();
