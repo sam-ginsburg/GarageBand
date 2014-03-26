@@ -34,7 +34,7 @@ window.FileSystem = (function(){
 			window.addEventListener('filesLoaded', this.save);
 			window.addEventListener('requestFiles', this.load);
 			window.addEventListener('filesPulled', this.printfiles);
-			window.addEventListener('deleteFile', this.remove);
+			// window.addEventListener('deleteFile', this.remove);
 			window.addEventListener('projectFound', this.load);
 			window.addEventListener('projectCreated', this.getProject);
 
@@ -63,8 +63,8 @@ window.FileSystem = (function(){
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
 		},
 
-		remove: function(event) {
-			fileToRemove = event.detail;
+		remove: function(name) {
+			fileToRemove = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveFile, errorHandler);
 		},
 
@@ -146,7 +146,7 @@ function toSaveFiles(fs){
 }
 
 function toRemoveFile(fs){
-	fs.root.getFile(fileToRemove.name, {create: false}, function(fileEntry) {
+	currentProject.getFile(fileToRemove, {create: false}, function(fileEntry) {
 
     fileEntry.remove(function() {
       console.log('File removed.');
