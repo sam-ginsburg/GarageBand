@@ -63,9 +63,14 @@ window.FileSystem = (function(){
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
 		},
 
-		remove: function(name) {
+		removeSound: function(name) {
 			fileToRemove = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveFile, errorHandler);
+		},
+
+		removeProject: function(name) {
+			fileToRemove = name;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveProject, errorHandler);
 		},
 
 		printfiles: function(event) {
@@ -190,7 +195,7 @@ function toGetFirstProject(fs){
 		entries = entries.concat(toArray(results));
 		currentProject = entries[0];
 
-		if(currentProject !== undefined){
+		if(currentProject !== undefined && currentProject !== null){
 			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
 		else{
@@ -214,6 +219,21 @@ function toGetProject(fs){
 		}
   }, errorHandler);
 
+}
+
+function toRemoveProject(fs){
+	fs.root.getDirectory(fileToRemove, {create: false}, function(dirEntry) {
+
+		dirEntry.remove(function() {
+			console.log('Project removed.');
+			if(fileToRemove === currentProject.name){
+				currentProject = undefined;
+				FileSystem.getFirstProject();
+			}
+			window.dispatchEvent(new CustomEvent('projectDeleted', {detail: dirEntry}));
+		}, errorHandler);
+
+	}, errorHandler);
 }
 
 function convertToObjs(fileentries){
