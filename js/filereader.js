@@ -63,12 +63,11 @@ function handleFileSelect(evt) {
       console.log(buffers.length);
       tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
-      tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
+      tableItems += '<td><span onClick = "deleteSound(' + length + ')" class="glyphicon glyphicon-remove"></span></td>';
       length++;
       document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
 }
-
 function createProject(){
   var name = document.getElementById('projectName').value;
   var ev = new CustomEvent('newProject', {detail: name});
@@ -90,6 +89,7 @@ function loadFromFileSystem(evt) {
     var tableItems = output.join('');
     tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
+       tableItems += '<td><span onClick = "deleteSound(' + length + ')" class="glyphicon glyphicon-remove"></span></td>';
     length++;
     document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>';
   }
