@@ -30,6 +30,7 @@
 
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar text-center">
+        <h1 id = "currentProject"> Current Project </h1>
         <div class="input-group">
           <span class="input-group-btn">
             <button class="btn btn-default" onClick = "createProject()" type="button">Go!</button>
@@ -40,16 +41,64 @@
           <table class="table table-striped">
             <thead>
               <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Projects</th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Load</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id = "projectList">
+            </tbody>
+            <thead>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Tracks</th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
                 <th>Name</th>
                 <th>Play</th>
                 <th>Stop</th>
+                <th>Delete</th>
               </tr>
             </thead>
-            <tbody id = "list">
+            <tbody id = "trackList">
+            </tbody>
+            <thead>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Songs</th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Play</th>
+                <th>Stop</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id = "songList">
             </tbody>
           </table>
         </div>
       </div>
+
+
+
+
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
         <div class="bs-callout bs-callout-info">
           <h1> This is where we'll put the editor for the current song </h1>

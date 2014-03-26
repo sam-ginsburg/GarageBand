@@ -24,6 +24,7 @@ window.FileSystem = (function(){
 	var FileSystem = {
 
 		createProject: function(event){
+			console.log(event);
 			projectName = event.detail;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateProject, errorHandler);
 		},
