@@ -63,8 +63,9 @@ function handleFileSelect(evt) {
       console.log(buffers.length);
       tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
+      tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
       length++;
-      document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>' ;
+      document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
 }
 
@@ -90,7 +91,7 @@ function loadFromFileSystem(evt) {
     tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
     length++;
-    document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
+    document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>';
   }
 }
 
