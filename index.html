@@ -27,31 +27,38 @@
       </div>
     </div>
 
+
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Play</th>
-                  <th>Stop</th>
-                </tr>
-              </thead>
-              <tbody id = "list">
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
-          <div class="bs-callout bs-callout-info">
-          <h1> This is where we'll put the editor for the current song </h1>
-        </div>
-          <hr>
-         
-           
+      <div class="col-sm-3 col-md-2 sidebar text-center">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" onClick = "createProject()" type="button">Go!</button>
+          </span>
+          <input type="text" id="projectName" placeholder="Enter New Project Name" class="form-control">
+        </div><!-- /input-group -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Play</th>
+                <th>Stop</th>
+              </tr>
+            </thead>
+            <tbody id = "list">
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
+        <div class="bs-callout bs-callout-info">
+          <h1> This is where we'll put the editor for the current song </h1>
+        </div>
+        <hr>
+
+
+      </div>
+    </div>
     <script src ="template" id="sound-template" type="text/template"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/filesystem.js"></script>
@@ -59,4 +66,4 @@
     <script src="js/filereader.js"></script>
 
   </body>
-</html>
+  </html>

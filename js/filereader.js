@@ -68,6 +68,13 @@ function handleFileSelect(evt) {
   }
 }
 
+function createProject(){
+  var name = document.getElementById('projectName').value;
+  var ev = new CustomEvent('newProject', {detail: name});
+  FileSystem.createProject(ev);
+
+}
+
 function loadFromFileSystem(evt) {
   var arrayAndName = evt.detail;
   for (var i = 0, f; f = arrayAndName[i]; i++) {
@@ -80,7 +87,7 @@ function loadFromFileSystem(evt) {
 
     initSound(arrayBuffer);
     var tableItems = output.join('');
-    tableItems += '<td><span onClick = "playSound(' + length+ ')" class="glyphicon glyphicon-play-circle"></span></td>';
+    tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
     tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
     length++;
     document.getElementById('list').innerHTML += '<tr>' + tableItems + '</tr>';
