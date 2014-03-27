@@ -39,6 +39,7 @@ window.FileSystem = (function(){
 
 		init: function() {
 			this.getFirstProject();
+			this.getFirstTrack();
 
 			window.addEventListener('filesLoaded', this.save);
 			// window.addEventListener('requestFiles', this.load);
@@ -332,7 +333,7 @@ function toGetFirstTrack(fs){
 			window.dispatchEvent(new CustomEvent('trackChanged', {detail: reconTrack}));
 		}
 		else{
-			
+
 		}
 
 	}, errorHandler);
