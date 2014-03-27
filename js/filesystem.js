@@ -9,12 +9,17 @@ window.FileSystem = (function(){
 	var filesOut = null;
 	var fileToRemove = null;
 	var projectName = null;
+	var trackName = null;
 	var curSoundDir = null;
 	var curTrackDir = null;
 	//var currentProject;
 
 	if(window.currentProject === undefined){
 		window.currentProject = null;
+	}
+
+	if(window.currentTrack === undefined){
+		window.currentTrack = null;
 	}
 
 	navigator.webkitPersistentStorage.requestQuota(100*1024*1024, function(grantedBytes) {
@@ -53,6 +58,15 @@ window.FileSystem = (function(){
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetProject, errorHandler);
 		},
 
+		getTrack: function(name) {
+			trackName = name;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetTrack, errorHandler);
+		},
+
+		updateTrack: function(name) {
+
+		},
+
 		load: function(){
 			console.log("loading");
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFiles, errorHandler);
@@ -66,6 +80,7 @@ window.FileSystem = (function(){
 
 		saveTrack: function(track) {
 			trackToSave = track;
+			currentTrack = track;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveTrack, errorHandler);
 		},
 
@@ -77,6 +92,10 @@ window.FileSystem = (function(){
 		removeProject: function(name) {
 			fileToRemove = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveProject, errorHandler);
+		},
+
+		removeTrack: function(name) {
+
 		},
 
 		printfiles: function(event) {
@@ -311,6 +330,28 @@ function toGetProject(fs){
 		}
   }, errorHandler);
 
+}
+
+function toGetTrack(fs){
+	currentProject.getDirectory("Tracks", {create: false, exclusive: true}, function(dirEntry) {
+		dirEntry.getFile(trackName, {create: false}, function(fileEntry) {
+
+			fileEntry.file(function(file) {
+				var reader = new FileReader();
+
+				reader.onloadend = function(e) {
+					var reconTrack = JSON.parse(this.result);
+					currentTrack = reconTrack;
+					console.log(currentTrack);
+					window.dispatchEvent(new CustomEvent('trackChanged', {detail: reconTrack}));
+
+				};
+
+				reader.readAsText(file);
+			}, errorHandler);
+
+		}, errorHandler);
+	}, errorHandler);
 }
 
 function toRemoveProject(fs){
