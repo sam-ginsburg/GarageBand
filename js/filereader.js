@@ -71,7 +71,20 @@ function handleFileSelect(evt) {
 
 function createProject(){
   var name = document.getElementById('projectName').value;
-  FileSystem.createProject(name);
+  var table = document.getElementById('projectList');
+  var rowCount = table.rows.length;
+  var found = true;
+
+  for(var i=0; i<rowCount; i++) {
+    var row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+  if(found){
+     FileSystem.createProject(name);
+  }
 
 }
 
@@ -116,5 +129,26 @@ function loadFromFileSystem(evt) {
   }
 }
 
+function loadProjectsFromFileSystem(evt){
+  var projects = evt.detail; // FileList object
+
+  // files is a FileList of File objects. List some properties.
+  for (var i = 0, p; p = projects[i]; i++) {
+      document.getElementById('projectList').innerHTML += '<tr id ='+p+' >' + "<td>"+ p+"</td>" + '</tr>' ;
+  }
+}
+
+function loadTracksFromFileSystem(evt){
+  var tracks = evt.detail; // FileList object
+
+  // files is a FileList of File objects. List some properties.
+  for (var i = 0, p; p = tracks[i]; i++) {
+      document.getElementById('trackList').innerHTML += '<tr id ='+p+' >' + "<td>"+ p+"</td>" + '</tr>' ;
+  }
+}
+
+
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 window.addEventListener('filesPulled', loadFromFileSystem, false);
+window.addEventListener('projectsPulled', loadProjectsFromFileSystem, false);
+window.addEventListener('tracksPulled', loadTracksFromFileSystem, false);
