@@ -138,6 +138,13 @@ function toSaveFiles(fs){
 		(function(f) {
 			currentProject.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {//fs.root.
 				fileEntry.createWriter(function(fileWriter) {
+
+					fileWriter.onwriteend = function(e) {
+						if(i === fileListToSave.length){
+							console.log('Write completed.');
+							window.dispatchEvent(new CustomEvent('filesSaved', {detail: fileListToSave}));
+						}
+					};
             // var buffs = [];
             // buffs.push(f.buffer);
             // var blob = new Blob(buffs);
@@ -146,8 +153,8 @@ function toSaveFiles(fs){
 			}, errorHandler);
 		})(file);
 	}
-	var a = new CustomEvent('filesSaved', {detail: fileListToSave});
-	window.dispatchEvent(a);
+	// var a = new CustomEvent('filesSaved', {detail: fileListToSave});
+	// window.dispatchEvent(a);
 
 }
 
@@ -233,16 +240,6 @@ function toRemoveProject(fs){
 			}
 			window.dispatchEvent(new CustomEvent('projectDeleted', {detail: dirEntry}));
 		}, errorHandler);
-
-
-		// dirEntry.remove(function() {
-		// 	console.log('Project removed.');
-		// 	if(fileToRemove === currentProject.name){
-		// 		currentProject = undefined;
-		// 		FileSystem.getFirstProject();
-		// 	}
-		// 	window.dispatchEvent(new CustomEvent('projectDeleted', {detail: dirEntry}));
-		// }, errorHandler);
 
 	}, errorHandler);
 }
