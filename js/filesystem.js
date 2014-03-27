@@ -14,7 +14,7 @@ window.FileSystem = (function(){
 		window.currentProject = null;
 	}
 
-	window.webkitStorageInfo.requestQuota(window.PERSISTENT, 50*1024*1024, function(grantedBytes) {
+	window.webkitStorageInfo.requestQuota(window.PERSISTENT, 100*1024*1024, function(grantedBytes) {
 		myGrantedBytes = grantedBytes;
 		window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
 	}, function(e) {
@@ -35,11 +35,7 @@ window.FileSystem = (function(){
 			window.addEventListener('filesLoaded', this.save);
 			window.addEventListener('requestFiles', this.load);
 			window.addEventListener('filesPulled', this.printfiles);
-			// window.addEventListener('deleteFile', this.remove);
-			window.addEventListener('projectFound', this.load);
 			window.addEventListener('projectCreated', this.getProject);
-
-			//window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateDirectory, errorHandler);
 
 			//this.load();
 		},
@@ -204,7 +200,8 @@ function toGetFirstProject(fs){
 		window.currentProject = entries[0];
 
 		if(currentProject !== undefined && currentProject !== null){
-			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
+			FileSystem.load();
+			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
 		else{
 			FileSystem.createProject({detail: "DefaultProject"});
@@ -223,7 +220,8 @@ function toGetProject(fs){
 	fs.root.getDirectory(projectName, {create: false}, function(dirEntry) {
 		currentProject = dirEntry;
 		if(currentProject !== null){
-			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
+			FileSystem.load();
+			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
   }, errorHandler);
 
