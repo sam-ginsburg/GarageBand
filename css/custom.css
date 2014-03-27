@@ -18,6 +18,11 @@ border-color: #5bc0de;
   color: #66B005
 }
 
+.glyphicon-remove:hover{
+  color: black
+}
+
+
 .glyphicon-stop:hover{
   color: #DB0202;
 }

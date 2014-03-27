@@ -63,11 +63,12 @@ function handleFileSelect(evt) {
       console.log(buffers.length);
       tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
-      tableItems += '<td><span onClick = "deleteSound(' + length + ')" class="glyphicon glyphicon-remove"></span></td>';
+      tableItems += '<td><span onClick = "removeSong(' + '&quot;' + escape(f.name) + '&quot;' + ',' + length +')" class="glyphicon glyphicon-remove"></span></td>';
       length++;
       document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>' ;
   }
 }
+
 function createProject(){
   var name = document.getElementById('projectName').value;
   var ev = new CustomEvent('newProject', {detail: name});
@@ -75,23 +76,23 @@ function createProject(){
 
 }
 
+function removeSong(name, length){
+  FileSystem.removeSound(name);
+
+}
+
 function loadFromFileSystem(evt) {
   var arrayAndName = evt.detail;
-  for (var i = 0, f; f = arrayAndName[i]; i++) {
-    var output = [];
-    var name = f.name;
-
-    console.log(name);
-    var arrayBuffer = f.buffer;
-    output.push('<td><strong>', name, '</strong> ','</td>');
-
-    initSound(arrayBuffer);
-    var tableItems = output.join('');
-    tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
-    tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
-       tableItems += '<td><span onClick = "deleteSound(' + length + ')" class="glyphicon glyphicon-remove"></span></td>';
-    length++;
-    document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>';
+  var table = document.getElementById('songList');
+  for (var index in arrayAndName) {
+    (function(file) {
+      context.decodeAudioData(file.buffer, function(audio) {
+        file.audio = audio;
+        var el = document.createElement('tr');
+        new SoundElement(el, file);
+        table.appendChild(el);
+      });
+    })(arrayAndName[index]);
   }
 }
 

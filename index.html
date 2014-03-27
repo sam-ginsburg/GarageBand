@@ -95,23 +95,28 @@
           </table>
         </div>
       </div>
-
-
-
-
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
         <div class="bs-callout bs-callout-info">
           <h1> This is where we'll put the editor for the current song </h1>
         </div>
         <hr>
-
-
       </div>
     </div>
+
+
+
+    <script id="sound-template" type="text/template">
+        <td class="name"></td>
+        <td><span class="play glyphicon glyphicon-play-circle"></span></td>
+        <td><span class="stop glyphicon glyphicon-stop"></span></td>
+        <td><span class="del glyphicon glyphicon-remove"></span></td>
+    </script>
+
+    <script src="js/directives/soundelement.js"></script>
+    <script src="js/AudioManager.js"></script>
     <script src ="template" id="sound-template" type="text/template"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/filesystem.js"></script>
-    <!--<script src="js/fileSelector.js"></script>-->
     <script src="js/filereader.js"></script>
 
   </body>
