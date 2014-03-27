@@ -98,17 +98,10 @@ function createTrack(){
   var track = {name: name,
               info: []};
 
-  for(var i=0; i<rowCount; i++) {
-    var row = table.rows[i];
-      table.deleteRow(i);
-           rowCount--;
-           i--;
-  }
-
   if(found){
      FileSystem.saveTrack(track);
   }
-  document.getElementById('track-display').innerHTML = JSON.stringify(window.currentTrack);
+  document.getElementById('trackList').innerHTML += '<tr id =' + track.name + ' >' + "<td>" + track.name + "</td>" + '</tr>';
 }
 
 function deleteRow(tableID, songName) {
@@ -235,8 +228,6 @@ function loadTracksFromFileSystem(evt){
   for (var i = 0, track; track = tracks[i]; i++) {
       document.getElementById('trackList').innerHTML += '<tr id =' + track + ' >' + "<td>" + track.name + "</td>" + '</tr>' ;
   }
-
-  document.getElementById('track-display').innerHTML = window.currentTrack;
 }
 
 
