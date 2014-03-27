@@ -194,7 +194,7 @@ function toGetFirstProject(fs){
 	dirReader.readEntries (function(results) {
 
 		entries = entries.concat(toArray(results));
-		currentProject = entries[0];
+		window.currentProject = entries[0];
 
 		if(currentProject !== undefined && currentProject !== null){
 			window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
