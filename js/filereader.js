@@ -74,7 +74,6 @@ function createProject(){
   var name = document.getElementById('projectName').value;
   var table = document.getElementById('projectList');
   var rowCount = table.rows.length;
-  var found = true;
 
   for(var i=0; i<rowCount; i++) {
     var row = table.rows[i];
@@ -82,10 +81,12 @@ function createProject(){
            rowCount--;
            i--;
   }
-
-  if(found){
+  console.log("great");
+     window.currentProject = name;
+     var projectName = document.getElementById("currentProject");
+     projectName.innerHTML = "";
+     projectName.innerHTML = "Current Project: " + name;
      FileSystem.createProject(name);
-  }
 }
 
 function createTrack(){
@@ -156,6 +157,7 @@ function removeProject(name){
   var rowCount = table.rows.length;
   var found = true;
 
+
   for(var i=0; i<rowCount; i++) {
     var row = table.rows[i];
       table.deleteRow(i);
@@ -163,7 +165,53 @@ function removeProject(name){
            i--;
   }
 
-  FileSystem.removeProject(name);
+    FileSystem.removeProject(name);
+
+}
+
+function getProject(name){
+
+  window.currentProject=name;
+
+  var projectName = document.getElementById("currentProject");
+  projectName.innerHTML = "";
+  projectName.innerHTML = "Current Project: " + name;
+  var table = document.getElementById('projectList');
+  var rowCount = table.rows.length;
+  var found = true;
+
+  for(var i=0; i<rowCount; i++) {
+    var row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+  table = document.getElementById('trackList');
+  rowCount = table.rows.length;
+  found = true;
+
+  for(var i=0; i<rowCount; i++) {
+    row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+  table = document.getElementById('songList');
+  rowCount = table.rows.length;
+  found = true;
+
+  for(var i=0; i<rowCount; i++) {
+    row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+
+  FileSystem.createProject(name);
+  FileSystem.getProject(name);
 
 }
 
@@ -173,8 +221,8 @@ function loadProjectsFromFileSystem(evt){
   // files is a FileList of File objects. List some properties.
   for (var i = 0, p; p = projects[i]; i++) {
       var contents='<tr id ='+p+' >' + "<td>"+ p+"</td>";
-      contents+="<td></td>";
-      contents+= '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>'
+      contents+= '<td><span onClick = "getProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
+      contents+= '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
       contents+= '</tr>' ;
       document.getElementById('projectList').innerHTML +=contents;
   }
