@@ -61,7 +61,8 @@ function handleFileSelect(evt) {
       reader.readAsArrayBuffer(f);
       var tableItems = output.join('');
       console.log(buffers.length);
-      tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle"></span></td>';
+      tableItems += '<td><button type="button" onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle" /></td>';
+      tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-pause"></span></td>';
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
       tableItems += '<td><span onClick = "removeSong(' + '&quot;' + escape(f.name) + '&quot;' + ',' + length +')" class="glyphicon glyphicon-remove"></span></td>';
       length++;
@@ -85,7 +86,6 @@ function createProject(){
   if(found){
      FileSystem.createProject(name);
   }
-
 }
 
 function deleteRow(tableID, songName) {
