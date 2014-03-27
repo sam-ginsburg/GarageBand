@@ -88,6 +88,27 @@ function createProject(){
   }
 }
 
+function createTrack(){
+  var name = document.getElementById('trackName').value;
+  var table = document.getElementById('trackList');
+  var rowCount = table.rows.length;
+  var found = true;
+
+  var track = {name: name,
+              info: []};
+
+  for(var i=0; i<rowCount; i++) {
+    var row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+  if(found){
+     FileSystem.saveTrack(track);
+  }
+}
+
 function deleteRow(tableID, songName) {
     try {
       console.log(tableID, songName);
@@ -162,8 +183,8 @@ function loadProjectsFromFileSystem(evt){
 function loadTracksFromFileSystem(evt){
   var tracks = evt.detail; // FileList object
   // files is a FileList of File objects. List some properties.
-  for (var i = 0, p; p = tracks[i]; i++) {
-      document.getElementById('trackList').innerHTML += '<tr id ='+p+' >' + "<td>"+ p+"</td>" + '</tr>' ;
+  for (var i = 0, track; track = tracks[i]; i++) {
+      document.getElementById('trackList').innerHTML += '<tr id =' + track + ' >' + "<td>" + track.name + "</td>" + '</tr>' ;
   }
 }
 
