@@ -70,8 +70,7 @@ function handleFileSelect(evt) {
 }
 function createProject(){
   var name = document.getElementById('projectName').value;
-  var ev = new CustomEvent('newProject', {detail: name});
-  FileSystem.createProject(ev);
+  FileSystem.createProject(name);
 
 }
 
