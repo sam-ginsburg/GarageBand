@@ -108,6 +108,7 @@ function createTrack(){
   if(found){
      FileSystem.saveTrack(track);
   }
+  document.getElementById('track-display').innerHTML = JSON.stringify(window.currentTrack);
 }
 
 function deleteRow(tableID, songName) {
@@ -234,6 +235,8 @@ function loadTracksFromFileSystem(evt){
   for (var i = 0, track; track = tracks[i]; i++) {
       document.getElementById('trackList').innerHTML += '<tr id =' + track + ' >' + "<td>" + track.name + "</td>" + '</tr>' ;
   }
+
+  document.getElementById('track-display').innerHTML = window.currentTrack;
 }
 
 
