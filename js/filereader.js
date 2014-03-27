@@ -129,18 +129,38 @@ function loadFromFileSystem(evt) {
   }
 }
 
+function removeProject(name){
+
+  var table = document.getElementById('projectList');
+  var rowCount = table.rows.length;
+  var found = true;
+
+  for(var i=0; i<rowCount; i++) {
+    var row = table.rows[i];
+      table.deleteRow(i);
+           rowCount--;
+           i--;
+  }
+
+  FileSystem.removeProject(name);
+
+}
+
 function loadProjectsFromFileSystem(evt){
   var projects = evt.detail; // FileList object
 
   // files is a FileList of File objects. List some properties.
   for (var i = 0, p; p = projects[i]; i++) {
-      document.getElementById('projectList').innerHTML += '<tr id ='+p+' >' + "<td>"+ p+"</td>" + '</tr>' ;
+      var contents='<tr id ='+p+' >' + "<td>"+ p+"</td>";
+      contents+="<td></td>";
+      contents+= '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>'
+      contents+= '</tr>' ;
+      document.getElementById('projectList').innerHTML +=contents;
   }
 }
 
 function loadTracksFromFileSystem(evt){
   var tracks = evt.detail; // FileList object
-
   // files is a FileList of File objects. List some properties.
   for (var i = 0, p; p = tracks[i]; i++) {
       document.getElementById('trackList').innerHTML += '<tr id ='+p+' >' + "<td>"+ p+"</td>" + '</tr>' ;
