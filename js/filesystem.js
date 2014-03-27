@@ -9,13 +9,14 @@ window.FileSystem = (function(){
 	var fileToRemove = null;
 	var projectName = null;
 	var curSoundDir = null;
+	var curTrackDir = null;
 	//var currentProject;
 
 	if(window.currentProject === undefined){
 		window.currentProject = null;
 	}
 
-	window.webkitStorageInfo.requestQuota(window.PERSISTENT, 100*1024*1024, function(grantedBytes) {
+	navigator.webkitPersistentStorage.requestQuota(100*1024*1024, function(grantedBytes) {
 		myGrantedBytes = grantedBytes;
 		window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
 	}, function(e) {
@@ -135,11 +136,13 @@ function toCreateProject(fs){
 function toSetUpProject(){
 	currentProject.getDirectory("Sounds", {create: true, exclusive: true}, function(dirEntry) {
 		curSoundDir = dirEntry;
-		FileSystem.getProject(projectName);
-	}, errorHandler);
-
-	currentProject.getDirectory("Tracks", {create: true, exclusive: true}, function(dirEntry) {
 		// FileSystem.getProject(projectName);
+
+		currentProject.getDirectory("Tracks", {create: true, exclusive: true}, function(dirEntry2) {
+			curTrackDir = dirEntry2;
+			FileSystem.getProject(projectName);
+		}, errorHandler);
+
 	}, errorHandler);
 
 }
@@ -184,6 +187,7 @@ function toRemoveFile(fs){
 function toGetFiles(fs){
 
 	var dirReader = curSoundDir.createReader();//fs.root. //currentProject.
+	var dirReaderTracks = curTrackDir.createReader();
 	var dirReaderProjs = fs.root.createReader();
 
 	var entries = [];
@@ -230,7 +234,13 @@ function toGetFirstProject(fs){
 		if(currentProject !== undefined && currentProject !== null){
 			currentProject.getDirectory('Sounds', {create: false}, function(dirEntry) {
 				curSoundDir = dirEntry;
-				FileSystem.load();
+
+				currentProject.getDirectory("Tracks", {create: false, exclusive: true}, function(dirEntry2) {
+					curTrackDir = dirEntry2;
+					FileSystem.load();
+				}, errorHandler);
+
+				// FileSystem.load();
 			}, errorHandler);
 			// FileSystem.load();
 			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
@@ -254,7 +264,13 @@ function toGetProject(fs){
 		if(currentProject !== null){
 			currentProject.getDirectory('Sounds', {create: false}, function(dirEntry) {
 				curSoundDir = dirEntry;
-				FileSystem.load();
+
+				currentProject.getDirectory("Tracks", {create: false, exclusive: true}, function(dirEntry2) {
+					curTrackDir = dirEntry2;
+					FileSystem.load();
+				}, errorHandler);
+
+				// FileSystem.load();
 			}, errorHandler);
 			// FileSystem.load();
 			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
