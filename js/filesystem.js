@@ -39,7 +39,7 @@ window.FileSystem = (function(){
 
 		init: function() {
 			this.getFirstProject();
-			this.getFirstTrack();
+			// this.getFirstTrack();
 
 			window.addEventListener('filesLoaded', this.save);
 			// window.addEventListener('requestFiles', this.load);
@@ -296,6 +296,7 @@ function toGetFirstProject(fs){
 
 				currentProject.getDirectory("Tracks", {create: false, exclusive: true}, function(dirEntry2) {
 					curTrackDir = dirEntry2;
+					FileSystem.getFirstTrack();
 					FileSystem.load();
 				}, errorHandler);
 
@@ -322,7 +323,6 @@ function toGetFirstTrack(fs){
 
 	var entries = [];
 
-  // Call the reader.readEntries() until no more results are returned.
   var readEntries = function() {
 	dirReader.readEntries (function(results) {
 
@@ -330,7 +330,7 @@ function toGetFirstTrack(fs){
 		window.currentTrack = entries[0];
 
 		if(currentTrack !== undefined && currentTrack !== null){
-			window.dispatchEvent(new CustomEvent('trackChanged', {detail: reconTrack}));
+			window.dispatchEvent(new CustomEvent('trackChanged', {detail: currentTrack}));
 		}
 		else{
 
