@@ -8,6 +8,7 @@ window.FileSystem = (function(){
 	var filesOut = null;
 	var fileToRemove = null;
 	var projectName = null;
+	var curSoundDir = null;
 	//var currentProject;
 
 	if(window.currentProject === undefined){
@@ -24,9 +25,9 @@ window.FileSystem = (function(){
 	var FileSystem = {
 
 		createProject: function(name){  // changed to string from event
-			console.log(event);
 			projectName = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateProject, errorHandler);
+			// window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSetUpProject, errorHandler);
 		},
 
 		init: function() {
@@ -125,16 +126,29 @@ function toCreateDefaultDirectory(fs){
 function toCreateProject(fs){
 	fs.root.getDirectory(projectName, {create: true, exclusive: true}, function(dirEntry) {
 		setProject(dirEntry);
-		FileSystem.getProject(dirEntry.name);
+		// FileSystem.getProject(dirEntry.name);
 		// window.dispatchEvent(new CustomEvent('projectCreated', {detail: dirEntry.name}));
+		toSetUpProject();
   }, errorHandler);
+}
+
+function toSetUpProject(){
+	currentProject.getDirectory("Sounds", {create: true, exclusive: true}, function(dirEntry) {
+		curSoundDir = dirEntry;
+		FileSystem.getProject(projectName);
+	}, errorHandler);
+
+	currentProject.getDirectory("Tracks", {create: true, exclusive: true}, function(dirEntry) {
+		// FileSystem.getProject(projectName);
+	}, errorHandler);
+
 }
 
 function toSaveFiles(fs){
 	for (var i = 0, file; file = fileListToSave[i]; ++i) {
 
 		(function(f) {
-			currentProject.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {//fs.root.
+			curSoundDir.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {//fs.root. //currentProject.
 				fileEntry.createWriter(function(fileWriter) {
 
 					fileWriter.onwriteend = function(e) {
@@ -157,7 +171,7 @@ function toSaveFiles(fs){
 }
 
 function toRemoveFile(fs){
-	currentProject.getFile(fileToRemove, {create: false}, function(fileEntry) {
+	curSoundDir.getFile(fileToRemove, {create: false}, function(fileEntry) { //currentProject.
 
     fileEntry.remove(function() {
       console.log('File removed.');
@@ -169,7 +183,7 @@ function toRemoveFile(fs){
 
 function toGetFiles(fs){
 
-	var dirReader = currentProject.createReader();//fs.root.
+	var dirReader = curSoundDir.createReader();//fs.root. //currentProject.
 	var dirReaderProjs = fs.root.createReader();
 
 	var entries = [];
@@ -214,7 +228,11 @@ function toGetFirstProject(fs){
 		window.currentProject = entries[0];
 
 		if(currentProject !== undefined && currentProject !== null){
-			FileSystem.load();
+			currentProject.getDirectory('Sounds', {create: false}, function(dirEntry) {
+				curSoundDir = dirEntry;
+				FileSystem.load();
+			}, errorHandler);
+			// FileSystem.load();
 			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
 		else{
@@ -234,7 +252,11 @@ function toGetProject(fs){
 	fs.root.getDirectory(projectName, {create: false}, function(dirEntry) {
 		currentProject = dirEntry;
 		if(currentProject !== null){
-			FileSystem.load();
+			currentProject.getDirectory('Sounds', {create: false}, function(dirEntry) {
+				curSoundDir = dirEntry;
+				FileSystem.load();
+			}, errorHandler);
+			// FileSystem.load();
 			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
   }, errorHandler);
