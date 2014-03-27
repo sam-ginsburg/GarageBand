@@ -65,7 +65,7 @@ function handleFileSelect(evt) {
       tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
       tableItems += '<td><span onClick = "removeSong(' + '&quot;' + escape(f.name) + '&quot;' + ',' + length +')" class="glyphicon glyphicon-remove"></span></td>';
       length++;
-      document.getElementById('songList').innerHTML += '<tr>' + tableItems + '</tr>' ;
+      document.getElementById('songList').innerHTML += '<tr id ='+escape(f.name)+' >' + tableItems + '</tr>' ;
   }
 }
 
@@ -75,8 +75,29 @@ function createProject(){
 
 }
 
+function deleteRow(tableID, songName) {
+    try {
+      console.log(tableID, songName);
+      var table = document.getElementById(tableID);
+      var rowCount = table.rows.length;
+      for(var i=0; i<rowCount; i++) {
+        var row = table.rows[i];
+        console.log(row.id);
+        if(row.id==songName) {
+           table.deleteRow(i);
+           rowCount--;
+           i--;
+        }
+
+   }
+  }catch(e) {
+    alert(e);
+  }
+}
+
 function removeSong(name, length){
   FileSystem.removeSound(name);
+  deleteRow("songList", name)
 
 }
 
