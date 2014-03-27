@@ -53,6 +53,10 @@ window.FileSystem = (function(){
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFirstProject, errorHandler);
 		},
 
+		getFirstTrack: function(){
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFirstTrack, errorHandler);
+		},
+
 		getProject: function(name){   // recently changed to string from name
 			projectName = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetProject, errorHandler);
@@ -301,6 +305,34 @@ function toGetFirstProject(fs){
 		}
 		else{
 			FileSystem.createProject("DefaultProject");
+		}
+
+	}, errorHandler);
+
+  };
+
+  readEntries();
+
+}
+
+function toGetFirstTrack(fs){
+
+	var dirReader = curTrackDir.createReader();//fs.root.
+
+	var entries = [];
+
+  // Call the reader.readEntries() until no more results are returned.
+  var readEntries = function() {
+	dirReader.readEntries (function(results) {
+
+		entries = entries.concat(toArray(results));
+		window.currentTrack = entries[0];
+
+		if(currentTrack !== undefined && currentTrack !== null){
+			window.dispatchEvent(new CustomEvent('trackChanged', {detail: reconTrack}));
+		}
+		else{
+			
 		}
 
 	}, errorHandler);
