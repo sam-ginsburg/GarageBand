@@ -32,10 +32,11 @@
       <div class="col-sm-3 col-md-2 sidebar text-center">
         <h1 id = "currentProject"> Current Project </h1>
         <div class="input-group">
+          <input type="text" id="projectName" placeholder="Enter New Project Name" class="form-control">
           <span class="input-group-btn">
             <button class="btn btn-default" onClick = "createProject()" type="button">Go!</button>
           </span>
-          <input type="text" id="projectName" placeholder="Enter New Project Name" class="form-control">
+          
         </div><!-- /input-group -->
         <div class="table-responsive">
           <table class="table table-striped">
@@ -56,6 +57,17 @@
             </thead>
             <tbody id = "projectList">
             </tbody>
+          </table>
+        </div>
+        <h5>New Track</h5>
+        <div class="input-group">
+          <input type="text" id="projectName" placeholder="Enter New Project Name" class="form-control">
+          <span class="input-group-btn">
+            <button class="btn btn-default" onClick = "createTrack()" type="button">Go!</button>
+          </span>
+        </div><!-- /input-group -->
+        <div class="table-responsive">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <td></td>
@@ -68,12 +80,17 @@
               <tr>
                 <th>Name</th>
                 <th>Play</th>
+                <th>Pause</th>
                 <th>Stop</th>
                 <th>Delete</th>
               </tr>
-            </thead>
+            </thead>  
             <tbody id = "trackList">
             </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <td></td>
@@ -86,6 +103,7 @@
               <tr>
                 <th>Name</th>
                 <th>Play</th>
+                <th>Pause</th>
                 <th>Stop</th>
                 <th>Delete</th>
               </tr>
@@ -96,7 +114,7 @@
         </div>
       </div>
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
-        <div class="bs-callout bs-callout-info">
+        <div class="track-display bs-callout bs-callout-info">
           <h1> This is where we'll put the editor for the current song </h1>
         </div>
         <hr>
@@ -107,9 +125,10 @@
 
     <script id="sound-template" type="text/template">
         <td class="name"></td>
-        <td><span class="play glyphicon glyphicon-play-circle"></span></td>
-        <td><span class="stop glyphicon glyphicon-stop"></span></td>
-        <td><span class="del glyphicon glyphicon-remove"></span></td>
+        <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+        <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+        <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+        <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script src="js/directives/soundelement.js"></script>
