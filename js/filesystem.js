@@ -33,8 +33,9 @@ window.FileSystem = (function(){
 			this.getFirstProject();
 
 			window.addEventListener('filesLoaded', this.save);
-			window.addEventListener('requestFiles', this.load);
+			// window.addEventListener('requestFiles', this.load);
 			window.addEventListener('filesPulled', this.printfiles);
+			window.addEventListener('projectsPulled', this.printfiles);
 			// window.addEventListener('projectCreated', this.getProject);
 
 			//this.load();
@@ -169,6 +170,7 @@ function toRemoveFile(fs){
 function toGetFiles(fs){
 
 	var dirReader = currentProject.createReader();//fs.root.
+	var dirReaderProjs = fs.root.createReader();
 
 	var entries = [];
 
@@ -178,6 +180,17 @@ function toGetFiles(fs){
 
 		entries = entries.concat(toArray(results));
 		filesOut = convertToObjs(entries);
+
+	}, errorHandler);
+
+	dirReaderProjs.readEntries (function(results) {
+
+		var res = [];
+		for(var i=0; i<results.length; i++){
+			res.push(results[i].name);
+		}
+
+		window.dispatchEvent(new CustomEvent('projectsPulled', {detail: res}));
 
 	}, errorHandler);
 
