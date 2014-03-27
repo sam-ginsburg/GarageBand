@@ -95,7 +95,8 @@ window.FileSystem = (function(){
 		},
 
 		removeTrack: function(name) {
-
+			trackName = name;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toRemoveTrack, errorHandler);
 		},
 
 		printfiles: function(event) {
@@ -342,7 +343,6 @@ function toGetTrack(fs){
 				reader.onloadend = function(e) {
 					var reconTrack = JSON.parse(this.result);
 					currentTrack = reconTrack;
-					console.log(currentTrack);
 					window.dispatchEvent(new CustomEvent('trackChanged', {detail: reconTrack}));
 
 				};
@@ -367,6 +367,16 @@ function toRemoveProject(fs){
 		}, errorHandler);
 
 	}, errorHandler);
+}
+
+function toRemoveTrack(fs){
+	curTrackDir.getFile(trackName, {create: false}, function(fileEntry) {
+
+		fileEntry.remove(function() {
+			console.log('Track removed.');
+		}, errorHandler);
+
+  }, errorHandler);
 }
 
 function convertToObjs(fileentries){
