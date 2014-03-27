@@ -5,6 +5,7 @@ window.FileSystem = (function(){
 
 	var myGrantedBytes = null;
 	var fileListToSave = null;
+	var trackToSave = null;
 	var filesOut = null;
 	var fileToRemove = null;
 	var projectName = null;
@@ -61,6 +62,11 @@ window.FileSystem = (function(){
 			var filesList = event.detail;
 			fileListToSave = filesList;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveFiles, errorHandler);
+		},
+
+		saveTrack: function(track) {
+			trackToSave = track;
+			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toSaveTrack, errorHandler);
 		},
 
 		removeSound: function(name) {
@@ -173,6 +179,27 @@ function toSaveFiles(fs){
 
 }
 
+function toSaveTrack(fs) {
+	curTrackDir.getFile(trackToSave.name, {create: true, exclusive: true}, function(fileEntry){
+		fileEntry.createWriter(function(fileWriter) {
+
+			fileWriter.onwriteend = function(e) {
+				console.log('Track write completed.');
+			};
+
+			fileWriter.onerror = function(e) {
+				console.log('Track write failed: ' + e.toString());
+			};
+
+			// Create a new Blob and write it to log.txt.
+			var blob = new Blob([JSON.stringify(trackToSave)], {type: 'text/plain'});
+
+			fileWriter.write(blob);
+
+		}, errorHandler);
+	}, errorHandler);
+}
+
 function toRemoveFile(fs){
 	curSoundDir.getFile(fileToRemove, {create: false}, function(fileEntry) { //currentProject.
 
@@ -209,6 +236,13 @@ function toGetFiles(fs){
 		}
 
 		window.dispatchEvent(new CustomEvent('projectsPulled', {detail: res}));
+
+	}, errorHandler);
+
+	dirReaderTracks.readEntries (function(results) {
+		var trackentries = [];
+		trackentries = trackentries.concat(toArray(results));
+		filesOut = tracksToJSON(trackentries);
 
 	}, errorHandler);
 
@@ -300,8 +334,6 @@ function convertToObjs(fileentries){
 	for(var i = 0; i<fileentries.length; i++){
 		var curfile = fileentries[i];
 
-		console.log(typeof curfile);
-
 		curfile.file(function(file) {
 			var reader = new FileReader();
 
@@ -316,6 +348,30 @@ function convertToObjs(fileentries){
 			};
 
 			reader.readAsArrayBuffer(file);
+		}, errorHandler);
+	}
+}
+
+function tracksToJSON(fileentries){
+	var res = [];
+	var reconTrack = {};
+
+	for(var i = 0; i<fileentries.length; i++){
+		var curfile = fileentries[i];
+
+		curfile.file(function(file) {
+			var reader = new FileReader();
+
+			reader.onloadend = function(e) {
+				reconTrack = JSON.parse(this.result);
+				res.push(reconTrack);
+				if(res.length == fileentries.length){
+					window.dispatchEvent(new CustomEvent('tracksPulled', {detail: res}));
+					// console.log(res);
+				}
+			};
+
+			reader.readAsText(file);
 		}, errorHandler);
 	}
 }
