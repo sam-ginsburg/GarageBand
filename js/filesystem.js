@@ -23,9 +23,9 @@ window.FileSystem = (function(){
 
 	var FileSystem = {
 
-		createProject: function(event){
+		createProject: function(name){  // changed to string from event
 			console.log(event);
-			projectName = event.detail;
+			projectName = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toCreateProject, errorHandler);
 		},
 
@@ -33,9 +33,10 @@ window.FileSystem = (function(){
 			this.getFirstProject();
 
 			window.addEventListener('filesLoaded', this.save);
-			window.addEventListener('requestFiles', this.load);
+			// window.addEventListener('requestFiles', this.load);
 			window.addEventListener('filesPulled', this.printfiles);
-			window.addEventListener('projectCreated', this.getProject);
+			window.addEventListener('projectsPulled', this.printfiles);
+			// window.addEventListener('projectCreated', this.getProject);
 
 			//this.load();
 		},
@@ -44,8 +45,8 @@ window.FileSystem = (function(){
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetFirstProject, errorHandler);
 		},
 
-		getProject: function(event){
-			projectName = event.detail;
+		getProject: function(name){   // recently changed to string from name
+			projectName = name;
 			window.requestFileSystem(window.PERSISTENT, myGrantedBytes, toGetProject, errorHandler);
 		},
 
@@ -124,7 +125,8 @@ function toCreateDefaultDirectory(fs){
 function toCreateProject(fs){
 	fs.root.getDirectory(projectName, {create: true, exclusive: true}, function(dirEntry) {
 		setProject(dirEntry);
-		window.dispatchEvent(new CustomEvent('projectCreated', {detail: dirEntry.name}));
+		FileSystem.getProject(dirEntry.name);
+		// window.dispatchEvent(new CustomEvent('projectCreated', {detail: dirEntry.name}));
   }, errorHandler);
 }
 
@@ -168,6 +170,7 @@ function toRemoveFile(fs){
 function toGetFiles(fs){
 
 	var dirReader = currentProject.createReader();//fs.root.
+	var dirReaderProjs = fs.root.createReader();
 
 	var entries = [];
 
@@ -177,6 +180,17 @@ function toGetFiles(fs){
 
 		entries = entries.concat(toArray(results));
 		filesOut = convertToObjs(entries);
+
+	}, errorHandler);
+
+	dirReaderProjs.readEntries (function(results) {
+
+		var res = [];
+		for(var i=0; i<results.length; i++){
+			res.push(results[i].name);
+		}
+
+		window.dispatchEvent(new CustomEvent('projectsPulled', {detail: res}));
 
 	}, errorHandler);
 
@@ -204,7 +218,7 @@ function toGetFirstProject(fs){
 			// window.dispatchEvent(new CustomEvent('projectFound', {detail: null}));
 		}
 		else{
-			FileSystem.createProject({detail: "DefaultProject"});
+			FileSystem.createProject("DefaultProject");
 		}
 
 	}, errorHandler);
@@ -248,7 +262,6 @@ function convertToObjs(fileentries){
 	for(var i = 0; i<fileentries.length; i++){
 		var curfile = fileentries[i];
 
-		//if(curfile.)
 		console.log(typeof curfile);
 
 		curfile.file(function(file) {
