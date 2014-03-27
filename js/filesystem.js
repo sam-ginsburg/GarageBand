@@ -225,7 +225,7 @@ function toGetProject(fs){
 function toRemoveProject(fs){
 	fs.root.getDirectory(fileToRemove, {create: false}, function(dirEntry) {
 
-		dirEntry.remove(function() {
+		dirEntry.removeRecursively(function() {
 			console.log('Project removed.');
 			if(fileToRemove === currentProject.name){
 				currentProject = undefined;
@@ -233,6 +233,16 @@ function toRemoveProject(fs){
 			}
 			window.dispatchEvent(new CustomEvent('projectDeleted', {detail: dirEntry}));
 		}, errorHandler);
+
+
+		// dirEntry.remove(function() {
+		// 	console.log('Project removed.');
+		// 	if(fileToRemove === currentProject.name){
+		// 		currentProject = undefined;
+		// 		FileSystem.getFirstProject();
+		// 	}
+		// 	window.dispatchEvent(new CustomEvent('projectDeleted', {detail: dirEntry}));
+		// }, errorHandler);
 
 	}, errorHandler);
 }
