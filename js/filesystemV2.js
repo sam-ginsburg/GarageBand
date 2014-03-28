@@ -15,15 +15,9 @@ window.FileSystem2 = (function(){
 
 			window.addEventListener('filesLoaded', this.testSaveHelper);
 			window.addEventListener('soundsSaved', function(){
+				console.log("saved from V2.");
 			});
 
-			var sayhi = function(thing){
-				console.log("hey broski");
-				console.log(thing);
-			};
-			//toGetTrack("DefaultProject", "SamsTrack", sayhi);
-
-			//toGetAllTracks("DefaultProject", sayhi);
 		},
 
 		testSaveHelper: function(event) { //dont use this function; just used for testing
@@ -80,8 +74,18 @@ window.FileSystem2 = (function(){
 			});
 		},
 
-		updateTrack: function(projName, trackName) {
+		getAllTheThings: function(projName) {
+			FileSystem2.getAllProjectNames();
+			FileSystem2.getAllSounds(projName);
+			FileSystem2.getAllTracks(projName);
+		},
 
+		updateTrack: function(projName, trackName, track) {
+			toRemoveTrack(projName, trackName, function(){
+				toCreateTrack(projName, track, function(){
+					window.dispatchEvent(new CustomEvent('trackUpdated'));
+				});
+			});
 		},
 
 		removeSound: function(projName, soundName) {
@@ -323,6 +327,7 @@ window.FileSystem2 = (function(){
 
 			fileEntry.remove(function() {
 				console.log('File ' + name + ' removed.');
+				success();
 			}, errorHandler);
 
 		}, errorHandler);
