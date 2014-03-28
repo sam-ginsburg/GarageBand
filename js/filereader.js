@@ -3,6 +3,7 @@ var sourceIndex = -1, length = 0;
 var sources = [], buffers = [];
 var audioBuffer = null;
 FileSystem.init();
+var audios = [];
 
 function playSound(index) { 
   // source is global so we can call .noteOff() later.
@@ -41,6 +42,26 @@ function initSound(arrayBuffer) {
   });
 }
 
+function initTrack(){
+  var tracks = window.currentTrack.info;
+  if(tracks){
+    for(var i=0; i<tracks.length; i++){
+
+    }
+  }
+}
+
+function playTrack(){
+
+}
+
+function pauseTrack(){
+
+}
+
+function stopTrack(){
+
+}
 // Read in sound files and add them to the list
 function handleFileSelect(evt) {
   var files = evt.target.files; // FileList object
@@ -82,11 +103,11 @@ function createProject(){
            i--;
   }
   console.log("great");
-     window.currentProject = name;
-     var projectName = document.getElementById("currentProject");
-     projectName.innerHTML = "";
-     projectName.innerHTML = "Current Project: " + name;
-     FileSystem.createProject(name);
+  window.currentProject = name;
+  var projectName = document.getElementById("currentProject");
+  projectName.innerHTML = "";
+  projectName.innerHTML = "Current Project: " + name;
+  FileSystem.createProject(name);
 }
 
 function createTrack(){
@@ -226,7 +247,11 @@ function loadTracksFromFileSystem(evt){
   var tracks = evt.detail; // FileList object
   // files is a FileList of File objects. List some properties.
   for (var i = 0, track; track = tracks[i]; i++) {
-      document.getElementById('trackList').innerHTML += '<tr id =' + track + ' >' + "<td>" + track.name + "</td>" + '</tr>' ;
+    var contents = '<tr id =' + track + ' >' + "<td>" + track.name + "</td>";
+    contents+= '<td><span onClick = "getTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
+    contents+= '<td><span onClick = "removeTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
+    contents+= '</tr>' ;
+    document.getElementById('trackList').innerHTML += contents;
   }
 }
 
