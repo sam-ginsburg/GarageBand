@@ -3,10 +3,8 @@ window.FileSystem2 = (function(){
 
 	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
-	var myGrantedBytes = null;
-
 	navigator.webkitPersistentStorage.requestQuota(100*1024*1024, function(grantedBytes) {
-		myGrantedBytes = grantedBytes;
+		window.myGrantedBytes = grantedBytes;
 	}, function(e) {
 		console.log('Error: Could not get storage quota.', e);
 	});
@@ -14,6 +12,11 @@ window.FileSystem2 = (function(){
 	var FileSystem = {
 
 		init: function() {
+
+			window.addEventListener('filesLoaded', this.testSaveHelper);
+			window.addEventListener('soundsSaved', function(){
+			});
+
 			var sayhi = function(thing){
 				console.log("hey broski");
 				console.log(thing);
@@ -23,16 +26,28 @@ window.FileSystem2 = (function(){
 			//toGetAllTracks("DefaultProject", sayhi);
 		},
 
+		testSaveHelper: function(event) { //dont use this function; just used for testing
+			var filesList = event.detail;
+			console.log("temp helper test");
+			FileSystem2.saveSounds("DefaultProject", filesList);
+		},
+
 		createProject: function(projName) {
-
+			toCreateProject(projName, function(){
+				window.dispatchEvent(new CustomEvent('projectCreated'));
+			});
 		},
 
-		saveNewTrack: function(projName, track) {
-
+		createTrack: function(projName, track) {
+			toCreateTrack(projName, track, function(){
+				window.dispatchEvent(new CustomEvent('trackCreated'));
+			});
 		},
 
-		saveSounds: function(projName, FilesList) {
-
+		saveSounds: function(projName, filesList) {
+			toSaveSounds(projName, filesList, function(){
+				window.dispatchEvent(new CustomEvent('soundsSaved'));
+			});
 		},
 
 		getAllProjectNames: function() {
@@ -70,20 +85,23 @@ window.FileSystem2 = (function(){
 		},
 
 		removeSound: function(projName, soundName) {
-
+			toRemoveSound(projName, soundName, function(){
+				window.dispatchEvent(new CustomEvent('soundRemoved'));
+			});
 		},
 
 		removeProject: function(projName) {
-
+			toRemoveProject(projName, function(){
+				window.dispatchEvent(new CustomEvent('projectRemoved'));
+			});
 		},
 
 		removeTrack: function(projName, trackName) {
-
+			toRemoveTrack(projName, trackName, function(){
+				window.dispatchEvent(new CustomEvent('trackRemoved'));
+			});
 		},
 
-		printfiles: function(event) {
-			console.log(event.detail);
-		}
 	};
 
 	function getFS(success) {
@@ -234,6 +252,108 @@ window.FileSystem2 = (function(){
 					}
 				});
 			}
+		});
+	}
+
+	function toSaveSounds(projName, filesList, success) {
+		getSoundsDir(projName, function(soundsDir){
+			for (var i = 0, file; file = filesList[i]; ++i) {
+
+				(function(f) {
+					soundsDir.getFile(f.name, {create: true, exclusive: true}, function(fileEntry) {
+						fileEntry.createWriter(function(fileWriter) {
+
+							fileWriter.onwriteend = function(e) {
+								if(i === filesList.length){
+									console.log('Sound write completed.');
+									success();
+								}
+							};
+							fileWriter.write(f);
+						}, errorHandler);
+					}, errorHandler);
+				})(file);
+			}
+		});
+	}
+
+	function toCreateTrack(projName, track, success) {
+		getTracksDir(projName, function(tracksDir){
+			tracksDir.getFile(track.name, {create: true, exclusive: true}, function(fileEntry){
+				fileEntry.createWriter(function(fileWriter) {
+
+					fileWriter.onwriteend = function(e) {
+						console.log('Track write completed.');
+						success();
+					};
+
+					fileWriter.onerror = function(e) {
+						console.log('Track write failed: ' + e.toString());
+					};
+
+					var blob = new Blob([JSON.stringify(track)], {type: 'text/plain'});
+
+					fileWriter.write(blob);
+
+				}, errorHandler);
+			}, errorHandler);
+		});
+	}
+
+	function makeDirectory(parentDir, name, success) {
+		parentDir.getDirectory(name, {create: true, exclusive: true}, function(dirEntry) {
+			success(dirEntry);
+		}, errorHandler);
+	}
+
+	function toCreateProject(projName, success) {
+		getFS(function(fs){
+			makeDirectory(fs.root, projName, function(projDir){
+				makeDirectory(projDir, "Sounds", function(soundsDir){
+					makeDirectory(projDir, "Tracks", function(tracksDir){
+						success();
+					});
+				});
+			});
+		});
+	}
+
+	function removeFile(parentDir, name, success) {
+		parentDir.getFile(name, {create: false}, function(fileEntry) {
+
+			fileEntry.remove(function() {
+				console.log('File ' + name + ' removed.');
+			}, errorHandler);
+
+		}, errorHandler);
+	}
+
+	function toRemoveSound(projName, soundName, success) {
+		getSoundsDir(projName, function(soundsDir){
+			removeFile(soundsDir, soundName, function(){
+				success();
+			});
+		});
+	}
+
+	function toRemoveTrack(projName, trackName, success) {
+		getTracksDir(projName, function(tracksDir){
+			removeFile(tracksDir, trackName, function(){
+				success();
+			});
+		});
+	}
+
+	function toRemoveProject(projName, success) {
+		getFS(function(fs){
+			fs.root.getDirectory(projName, {create: false}, function(dirEntry) {
+
+				dirEntry.removeRecursively(function() {
+					console.log('Project ' + projName + ' removed.');
+					success();
+				}, errorHandler);
+
+			}, errorHandler);
 		});
 	}
 
