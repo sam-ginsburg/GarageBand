@@ -36,23 +36,33 @@ window.FileSystem2 = (function(){
 		},
 
 		getAllProjectNames: function() {
-
+			toGetAllProjectNames(function(allProjNames){
+				window.dispatchEvent(new CustomEvent('allProjNamesPulled', {detail: allProjNames}));
+			});
 		},
 
 		getSound: function(projName, soundName) {
-
+			toGetSound(projName, soundName, function(sound){
+				window.dispatchEvent(new CustomEvent('soundPulled', {detail: sound}));
+			});
 		},
 
 		getAllSounds: function(projName) {
-
+			toGetAllSounds(projName, function(allSounds){
+				window.dispatchEvent(new CustomEvent('allSoundsPulled', {detail: allSounds}));
+			});
 		},
 
 		getTrack: function(projName, trackName) {
-
+			toGetTrack(projName, trackName, function(track){
+				window.dispatchEvent(new CustomEvent('trackPulled', {detail: track}));
+			});
 		},
 
 		getAllTracks: function(projName) {
-
+			toGetAllTracks(projName, function(allTracks){
+				window.dispatchEvent(new CustomEvent('allTracksPulled', {detail: allTracks}));
+			});
 		},
 
 		updateTrack: function(projName, trackName) {
@@ -86,6 +96,19 @@ window.FileSystem2 = (function(){
 		getFS(function(fs) {
 			fs.root.getDirectory(projName, {create: false}, function(dirEntry) {
 				success(dirEntry);
+			}, errorHandler);
+		});
+	}
+
+	function toGetAllProjectNames(success) {
+		getFS(function(fs){
+			var allProjNames = [];
+			var dirReader = fs.root.createReader();
+			dirReader.readEntries (function(results) {
+				for(var i=0; i<results.length; i++){
+					allProjNames.push(results[i].name);
+				}
+				success(allProjNames);
 			}, errorHandler);
 		});
 	}
