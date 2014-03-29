@@ -11,20 +11,20 @@ window.FileSystem2 = (function(){
 
 	var FileSystem = {
 
-		init: function() {
+		// init: function() {
 
-			window.addEventListener('filesLoaded', this.testSaveHelper);
-			window.addEventListener('soundsSaved', function(){
-				console.log("saved from V2.");
-			});
+		//	window.addEventListener('filesLoaded', this.testSaveHelper);
+		//	window.addEventListener('soundsSaved', function(){
+		//		console.log("saved from V2.");
+		//	});
 
-		},
+		// },
 
-		testSaveHelper: function(event) { //dont use this function; just used for testing
-			var filesList = event.detail;
-			console.log("temp helper test");
-			FileSystem2.saveSounds("DefaultProject", filesList);
-		},
+		// testSaveHelper: function(event) { //dont use this function; just used for testing
+		//	var filesList = event.detail;
+		//	console.log("temp helper test");
+		//	FileSystem2.saveSounds("DefaultProject", filesList);
+		// },
 
 		createProject: function(projName) {
 			toCreateProject(projName, function(){
