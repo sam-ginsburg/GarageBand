@@ -1,10 +1,11 @@
 var SoundElement = (function() {
 	function SoundElement(element, sound) {
 		this.el = element;
+		this.sound = sound;
+		this.el.id = this.sound.name;
 		this.el.innerHTML = 
 		document.querySelector('#sound-template').innerHTML;
 
-		this.sound = sound;
 		this.el.querySelector('.name').innerText = this.sound.name;
 
 		this.el.querySelector('.play')

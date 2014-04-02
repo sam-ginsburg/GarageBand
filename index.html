@@ -54,7 +54,7 @@
                 <th>Load</th>
                 <th>Delete</th>
               </tr>
-            </thead>
+             </thead>
             <tbody id = "projectList">
             </tbody>
           </table>
@@ -120,9 +120,7 @@
         <hr>
       </div>
     </div>
-
-
-
+    
     <script id="sound-template" type="text/template">
         <td class="name"></td>
         <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
@@ -131,8 +129,13 @@
         <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
-    <script id="project-template" type="text/template"></script>
+    <script id="project-template" type="text/template">
+        <td class="name"></td>
+        <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
+        <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+    </script>
 
+    <script src="js/directives/projectelement.js"></script>
     <script src="js/directives/soundelement.js"></script>
     <script src="js/ObservableArray.js"></script>
     <script src="js/ProjectManager.js"></script>

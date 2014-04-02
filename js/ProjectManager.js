@@ -11,12 +11,25 @@ var ProjectManager = (function(){
         currentProject: new Project(),
         project_hash: {},
 
-		switchProject: function(name){
-			if (name in this.project_hash) {
-				getProject(name, console.log());
-			} else {
-				console.error("Error in switching project, invalid name");
+		load: function(evt){
+			console.log(evt);
+			getProject(evt.detail, console.log());
+		},
+
+		del: function(evt){
+			var table = document.getElementById('projectList');
+			var rowCount = table.rows.length;
+			var projectName = evt.detail;
+			for(var i=0; i<rowCount; i++) {
+				var row = table.rows[i];
+				console.log(row.innerHTML);
+				if(row.id==projectName) {
+						table.deleteRow(i);
+						rowCount--;
+						i--;
+				}
 			}
+			FileSystem2.removeProject(projectName);
 		},
 
 		init: function(evt){
@@ -29,6 +42,8 @@ var ProjectManager = (function(){
 		}
 	};
 
+	window.addEventListener('project.load', ProjectManager.load.bind(ProjectManager));
+	window.addEventListener('project.del', ProjectManager.del.bind(ProjectManager));
 	window.addEventListener('projectsPulled', ProjectManager.init.bind(ProjectManager), false);
 	return ProjectManager;
 })();

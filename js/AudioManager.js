@@ -21,7 +21,6 @@ var AudioManager = (function() {
 
 
 		stop: function(evt){
-			console.log("TEST", arguments, this.playing);
 			if(!evt || (this.playing && evt.detail === this.playing.sound)){
 				this.playing.source.stop(0);
 				this.playing = null;
@@ -29,19 +28,25 @@ var AudioManager = (function() {
 		},
 
 		del: function(evt){
-			console.log(window.currentProject);
 			var table = document.getElementById('songList');
 			var rowCount = table.rows.length;
-			var songName = evt;
+			var songName;
+			if(evt.detail){
+				songName = evt.detail.name;
+			} else{
+				songName = evt;
+			}
 			for(var i=0; i<rowCount; i++) {
 			var row = table.rows[i];
+			console.log(row.id);
 			if(row.id==songName) {
 					table.deleteRow(i);
 					rowCount--;
 					i--;
 				}
 			}
-			FileSystem2.removeSound(window.currentProject, songName);
+			console.log(window.currentProject);
+			FileSystem2.removeSound(window.currentProject.name, songName);
 		}
 
 	};

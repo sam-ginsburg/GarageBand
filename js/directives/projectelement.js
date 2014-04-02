@@ -1,33 +1,27 @@
 var ProjectElement = (function() {
 	function ProjectElement(element, project) {
 		this.el = element;
+		this.el.id = project;
 		this.el.innerHTML = 
-		document.querySelector('#sound-template').innerHTML;
+		document.querySelector('#project-template').innerHTML;
 
-		this.sound = sound;
-		this.el.querySelector('.name').innerText = this.sound.name;
+		this.name = project;
+		this.el.querySelector('.name').innerText = this.name;
 
-		this.el.querySelector('.play')
-		.addEventListener('click', this.play.bind(this));
-
-		this.el.querySelector('.stop')
-		.addEventListener('click', this.stop.bind(this));
+		this.el.querySelector('.load')
+		.addEventListener('click', this.load.bind(this));
 
 		this.el.querySelector('.del')
 		.addEventListener('click', this.del.bind(this));
 	}
 
-	SoundElement.prototype.play = function() { // do stuff on play }
-		window.dispatchEvent(new CustomEvent('audio.play', {detail: this.sound}));
+	ProjectElement.prototype.load = function() { // do stuff on stop }
+		window.dispatchEvent(new CustomEvent('project.load', {detail: this.name}));
 	}
 
-	SoundElement.prototype.stop = function() { // do stuff on stop }
-		window.dispatchEvent(new CustomEvent('audio.stop', {detail: this.sound}));
+    ProjectElement.prototype.del = function() { // do stuff on stop }
+		window.dispatchEvent(new CustomEvent('project.del', {detail: this.name}));
 	}
 
-    SoundElement.prototype.del = function() { // do stuff on stop }
-		window.dispatchEvent(new CustomEvent('audio.del', {detail: this.sound}));
-	}
-
-	return SoundElement;
+	return ProjectElement;
 })();

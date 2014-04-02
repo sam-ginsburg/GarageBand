@@ -230,15 +230,14 @@ function getProject(name){
 }
 
 function loadProjectsFromFileSystem(evt){
-  var projects = evt.detail; // FileList object
-
-  // files is a FileList of File objects. List some properties.
-  for (var i = 0, p; p = projects[i]; i++) {
-      var contents='<tr id ='+p+' >' + "<td>"+ p+"</td>";
-      contents+= '<td><span onClick = "getProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
-      contents+= '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
-      contents+= '</tr>' ;
-      document.getElementById('projectList').innerHTML +=contents;
+  var projects = evt.detail;
+  var table = document.getElementById('projectList');
+  for (var index in projects) {
+    (function(project) {
+        var el = document.createElement('tr');
+        new ProjectElement(el, project);
+        table.appendChild(el);
+    })(projects[index]);
   }
 }
 
