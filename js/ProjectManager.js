@@ -7,13 +7,47 @@ var ProjectManager = (function(){
 
 	var ProjectManager = {
 
-        projects: new ObservableArray("Projects"),
-        currentProject: new Project(),
-        project_hash: {},
+		projects: new ObservableArray("Projects"),
+		currentProject: new Project(),
+		project_hash: {},
 
 		load: function(evt){
-			console.log(evt);
-			getProject(evt.detail, console.log());
+			getProject(evt.detail);
+			var projectName = document.getElementById("currentProject");
+			projectName.innerHTML = "";
+			projectName.innerHTML = "Current Project: " + evt.detail;
+			var table = document.getElementById('projectList');
+			var rowCount = table.rows.length;
+			var found = true;
+
+			for(var i=0; i<rowCount; i++) {
+				var row = table.rows[i];
+				table.deleteRow(i);
+				rowCount--;
+				i--;
+			}
+
+			table = document.getElementById('trackList');
+			rowCount = table.rows.length;
+			found = true;
+
+			for(var i=0; i<rowCount; i++) {
+				row = table.rows[i];
+				table.deleteRow(i);
+				rowCount--;
+				i--;
+			}
+
+			table = document.getElementById('songList');
+			rowCount = table.rows.length;
+			found = true;
+
+			for(var i=0; i<rowCount; i++) {
+				row = table.rows[i];
+				table.deleteRow(i);
+				rowCount--;
+				i--;
+			}
 		},
 
 		del: function(evt){
@@ -24,9 +58,9 @@ var ProjectManager = (function(){
 				var row = table.rows[i];
 				console.log(row.innerHTML);
 				if(row.id==projectName) {
-						table.deleteRow(i);
-						rowCount--;
-						i--;
+					table.deleteRow(i);
+					rowCount--;
+					i--;
 				}
 			}
 			FileSystem2.removeProject(projectName);
