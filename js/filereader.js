@@ -27,12 +27,15 @@ function stopSound(index, bool) {
   return -1;
 }
 
+
+
 function initSound(arrayBuffer) {
   context.decodeAudioData(arrayBuffer, function(buffer) {
     // audioBuffer is global to reuse the decoded audio later.
     audioBuffer = buffer;
     buffers.push(audioBuffer);
-    var source = context.createBufferSource();
+    var source;
+    source = context.createBufferSource();
     source.buffer = audioBuffer;
     source.loop = false;
     source.connect(context.destination);
@@ -40,6 +43,7 @@ function initSound(arrayBuffer) {
   }, function(e) {
     console.log('Error decoding file', e);
   });
+  return source;
 }
 
 function initTrack(){
@@ -71,23 +75,19 @@ function handleFileSelect(evt) {
 
   // files is a FileList of File objects. List some properties.
   for (var i = 0, f; f = files[i]; i++) {
-      var output = [];
-      var reader = new FileReader();
-      output.push('<td><strong>', escape(f.name), '</strong> ','</td>');
+    var output = [];
+    var reader = new FileReader();
+    var source;
+    reader.onload = function(e) {
+      context.decodeAudioData(this.result, function(audio) {
+        this.audio = audio;
+        var el = document.createElement('tr');
+        new SoundElement(el, this);
+        table.appendChild(el);
+      });
+    };
 
-      reader.onload = function(e) {
-       initSound(this.result);
-      };
-
-      reader.readAsArrayBuffer(f);
-      var tableItems = output.join('');
-      console.log(buffers.length);
-      tableItems += '<td><button type="button" onClick = "playSound(' + length + ')" class="glyphicon glyphicon-play-circle" /></td>';
-      tableItems += '<td><span onClick = "playSound(' + length + ')" class="glyphicon glyphicon-pause"></span></td>';
-      tableItems += '<td><span onClick = "stopSound(' + length + ')" class="glyphicon glyphicon-stop"></span></td>';
-      tableItems += '<td><span onClick = "removeSong(' + '&quot;' + escape(f.name) + '&quot;' + ',' + length +')" class="glyphicon glyphicon-remove"></span></td>';
-      length++;
-      document.getElementById('songList').innerHTML += '<tr id ='+escape(f.name)+' >' + tableItems + '</tr>' ;
+    reader.readAsArrayBuffer(f);
   }
 }
 
@@ -234,11 +234,11 @@ function loadProjectsFromFileSystem(evt){
 
   // files is a FileList of File objects. List some properties.
   for (var i = 0, p; p = projects[i]; i++) {
-      var contents='<tr id ='+p+' >' + "<td>"+ p+"</td>";
-      contents+= '<td><span onClick = "getProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
-      contents+= '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
-      contents+= '</tr>' ;
-      document.getElementById('projectList').innerHTML +=contents;
+    var contents ='<tr id =' + p + ' >' + "<td>" + p+ "</td>";
+    contents += '<td><span onClick = "getProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
+    contents += '<td><span onClick = "removeProject(' + '&quot;' + p + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
+    contents += '</tr>' ;
+    document.getElementById('projectList').innerHTML +=contents;
   }
 }
 
@@ -247,9 +247,9 @@ function loadTracksFromFileSystem(evt){
   // files is a FileList of File objects. List some properties.
   for (var i = 0, track; track = tracks[i]; i++) {
     var contents = '<tr id =' + track + ' >' + "<td>" + track.name + "</td>";
-    contents+= '<td><span onClick = "getTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
-    contents+= '<td><span onClick = "removeTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
-    contents+= '</tr>' ;
+    contents += '<td><span onClick = "getTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
+    contents += '<td><span onClick = "removeTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
+    contents += '</tr>' ;
     document.getElementById('trackList').innerHTML += contents;
   }
 }
