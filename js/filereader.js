@@ -122,8 +122,10 @@ function createTrack(){
   if(found){
      FileSystem.saveTrack(track);
   }
-  document.getElementById('trackList').innerHTML += '<tr id =' + track.name + ' >' + "<td>" + track.name + "</td>" + '</tr>';
-}
+  var el = document.createElement('tr');
+  new TrackElement(el, track);
+  table.appendChild(el);
+  }
 
 function deleteRow(tableID, songName) {
     try {
@@ -232,7 +234,6 @@ function getProject(name){
 
 function loadProjectsFromFileSystem(evt){
   var projects = evt.detail; // FileList object
-
   // files is a FileList of File objects. List some properties.
   for (var i = 0, p; p = projects[i]; i++) {
       var contents='<tr id ='+p+' >' + "<td>"+ p+"</td>";
@@ -246,12 +247,14 @@ function loadProjectsFromFileSystem(evt){
 function loadTracksFromFileSystem(evt){
   var tracks = evt.detail; // FileList object
   // files is a FileList of File objects. List some properties.
-  for (var i = 0, track; track = tracks[i]; i++) {
-    var contents = '<tr id =' + track + ' >' + "<td>" + track.name + "</td>";
-    contents+= '<td><span onClick = "getTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-upload"></span></td>';
-    contents+= '<td><span onClick = "removeTrack(' + '&quot;' + track.name + '&quot;'+')" class="glyphicon glyphicon-remove"></span></td>';
-    contents+= '</tr>' ;
-    document.getElementById('trackList').innerHTML += contents;
+  var table = document.getElementById('trackList');
+  for (var index in tracks) {
+    (function(file) {
+      var el = document.createElement('tr');
+      new TrackElement(el, file);
+      table.appendChild(el);
+    }(tracks[index]);
+    
   }
 }
 
