@@ -28,26 +28,25 @@ var AudioManager = (function() {
 			}
 		},
 
-	    del: function(evt){
-	    	console.log(window.currentProject);
-	    	var table = document.getElementById('songList');
-       		var rowCount = table.rows.length;
-       		var songName = evt;
-            for(var i=0; i<rowCount; i++) {
-        		var row = table.rows[i];
-        		if(row.id==songName) {
-           			table.deleteRow(i);
-           			rowCount--;
-           			i--;
-        		}
-        	}
+		del: function(evt){
+			console.log(window.currentProject);
+			var table = document.getElementById('songList');
+			var rowCount = table.rows.length;
+			var songName = evt;
+			for(var i=0; i<rowCount; i++) {
+			var row = table.rows[i];
+			if(row.id==songName) {
+					table.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
 			FileSystem2.removeSound(window.currentProject, songName);
 		}
 
 	};
-
-	window.addEventListener('audio.play', AudioManager.play.bind(AudioManager))
-	window.addEventListener('audio.stop', AudioManager.stop.bind(AudioManager))
-	window.addEventListener('audio.del', AudioManager.del.bind(AudioManager))
+	window.addEventListener('audio.play', AudioManager.play.bind(AudioManager));
+	window.addEventListener('audio.stop', AudioManager.stop.bind(AudioManager));
+	window.addEventListener('audio.del', AudioManager.del.bind(AudioManager));
 	return AudioManager;
 })();
