@@ -5,27 +5,27 @@ var audioBuffer = null;
 FileSystem.init();
 var audios = [];
 
-function playSound(index) { 
-  // source is global so we can call .noteOff() later.
-  if(sources[index]){
-    stopSound(index, true);
-    sourceIndex = index;
-    sources[index].noteOn(0); // Play immediately.
-  }
-  return index;
-}
+// function playSound(index) { 
+//   // source is global so we can call .noteOff() later.
+//   if(sources[index]){
+//     stopSound(index, true);
+//     sourceIndex = index;
+//     sources[index].noteOn(0); // Play immediately.
+//   }
+//   return index;
+// }
 
-function stopSound(index, bool) {
-  if (sourceIndex != -1 && (index == sourceIndex || bool)) {
-    sources[sourceIndex].noteOff(0);
-    sources[sourceIndex] = context.createBufferSource();
-    sources[sourceIndex].buffer = buffers[sourceIndex];
-    sources[sourceIndex].loop = false;
-    sources[sourceIndex].connect(context.destination);
-    sourceIndex = -1;
-  }
-  return -1;
-}
+// function stopSound(index, bool) {
+//   if (sourceIndex != -1 && (index == sourceIndex || bool)) {
+//     sources[sourceIndex].noteOff(0);
+//     sources[sourceIndex] = context.createBufferSource();
+//     sources[sourceIndex].buffer = buffers[sourceIndex];
+//     sources[sourceIndex].loop = false;
+//     sources[sourceIndex].connect(context.destination);
+//     sourceIndex = -1;
+//   }
+//   return -1;
+// }
 
 
 
@@ -153,10 +153,10 @@ function deleteRow(tableID, songName) {
   }
 }
 
-function removeSong(name, length){
-  FileSystem.removeSound(name);
-  AudioManager.del(name);
-}
+// function removeSong(name, length){
+//   FileSystem.removeSound(name);
+//   AudioManager.del(name);
+// }
 
 function loadFromFileSystem(evt) {
   var arrayAndName = evt.detail;
@@ -173,23 +173,24 @@ function loadFromFileSystem(evt) {
   }
 }
 
-function removeProject(name){
+// function removeProject(name){
 
-  var table = document.getElementById('projectList');
-  var rowCount = table.rows.length;
-  var found = true;
+//   console.log("test");
+//   var table = document.getElementById('projectList');
+//   var rowCount = table.rows.length;
+//   var found = true;
 
 
-  for(var i=0; i<rowCount; i++) {
-    var row = table.rows[i];
-      table.deleteRow(i);
-           rowCount--;
-           i--;
-  }
+//   for(var i=0; i<rowCount; i++) {
+//     var row = table.rows[i];
+//       table.deleteRow(i);
+//            rowCount--;
+//            i--;
+//   }
 
-    FileSystem.removeProject(name);
+//     FileSystem.removeProject(name);
 
-}
+// }
 
 function getProject(name){
 
