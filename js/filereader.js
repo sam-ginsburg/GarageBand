@@ -238,7 +238,6 @@ function getProject(name){
 }
 
 function loadProjectsFromFileSystem(evt){
-
   var projects = evt.detail;
   var table = document.getElementById('projectList');
   for (var index in projects) {
@@ -247,7 +246,6 @@ function loadProjectsFromFileSystem(evt){
         new ProjectElement(el, project);
         table.appendChild(el);
     })(projects[index]);
-
   }
 }
 
