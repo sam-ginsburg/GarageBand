@@ -79,15 +79,16 @@ function handleFileSelect(evt) {
     var output = [];
     var reader = new FileReader();
     var source;
-    reader.onload = function(e) {
+    window.myFile = f;
+    reader.onload = function(e){
       context.decodeAudioData(this.result, function(audio) {
         this.audio = audio;
+        this.name = window.myFile.name;
         var el = document.createElement('tr');
         new SoundElement(el, this);
         table.appendChild(el);
       });
-    };
-
+    }
     reader.readAsArrayBuffer(f);
   }
 }
