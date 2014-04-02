@@ -149,8 +149,7 @@ function deleteRow(tableID, songName) {
 
 function removeSong(name, length){
   FileSystem.removeSound(name);
-  deleteRow("songList", name)
-
+  AudioManager.del(name);
 }
 
 function loadFromFileSystem(evt) {
