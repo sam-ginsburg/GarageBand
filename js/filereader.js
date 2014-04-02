@@ -73,6 +73,7 @@ function handleFileSelect(evt) {
   var a = new CustomEvent('filesLoaded', {detail: files});
   window.dispatchEvent(a);
 
+  var table = document.getElementById('songList');
   // files is a FileList of File objects. List some properties.
   for (var i = 0, f; f = files[i]; i++) {
     var output = [];
