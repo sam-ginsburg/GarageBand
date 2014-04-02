@@ -252,7 +252,7 @@ function loadTracksFromFileSystem(evt){
       var el = document.createElement('tr');
       new TrackElement(el, file);
       table.appendChild(el);
-    }(tracks[index]);
+    })(tracks[index]);
     
   }
 }
