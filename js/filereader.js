@@ -79,16 +79,20 @@ function handleFileSelect(evt) {
     var output = [];
     var reader = new FileReader();
     var source;
-    window.myFile = f;
-    reader.onload = function(e){
-      context.decodeAudioData(this.result, function(audio) {
-        this.audio = audio;
-        this.name = window.myFile.name;
-        var el = document.createElement('tr');
-        new SoundElement(el, this);
-        table.appendChild(el);
-      });
-    }
+
+    reader.onload = (function(theFile){
+      var fileName = theFile.name;
+      return function(f){
+        context.decodeAudioData(this.result, function(audio) {
+          var sound = {
+            audio: audio,
+            name: fileName};
+          var el = document.createElement('tr');
+          new SoundElement(el, sound);
+          table.appendChild(el);
+        });
+      };
+    })(f);
     reader.readAsArrayBuffer(f);
   }
 }
