@@ -48,10 +48,9 @@ var AudioManager = (function() {
 		},
 
 		stop: function(evt){
-			if(!evt || (evt.detail === this.playing.sound)){
-				if(this.playing)
-					this.playing.source.stop(0);
-				var index = this.paused.indexOf(this.playing.sound);
+			if(!evt || this.playing && (evt.detail === this.playing.sound)){
+				this.playing.source.stop(0);
+				index = this.paused.indexOf(this.playing.sound);
 				console.log(index);
 				if(index > -1){
 					this.paused[index].startOffset = 0;
@@ -59,6 +58,14 @@ var AudioManager = (function() {
 				}
 
 				this.playing = null;
+			}
+			else if(evt.detail){
+				index = this.paused.indexOf(evt.detail);
+				console.log(index);
+				if(index > -1){
+					this.paused[index].startOffset = 0;
+					console.log(this.paused[index].startOffset);
+				}
 			}
 		},
 
