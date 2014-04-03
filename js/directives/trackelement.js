@@ -7,8 +7,6 @@ var TrackElement = (function() {
 
 		this.track = track;
 		this.el.querySelector('.name').innerText = this.track.name;
-		this.el.querySelector('.name')
-		.addEventListener('click', this.name.bind(this));
 
 		this.el.querySelector('.play')
 		.addEventListener('click', this.play.bind(this));
@@ -22,10 +20,6 @@ var TrackElement = (function() {
 		this.el.querySelector('.load')
 		.addEventListener('click', this.load.bind(this));
 	}
-
-	TrackElement.prototype.name = function() {//populate the track editor
-		window.dispatchEvent(new CustomEvent('track.editor', {detail: this.track}));
-	};
 
 	TrackElement.prototype.play = function() {
 		window.dispatchEvent(new CustomEvent('track.play', {detail: this.track}));
