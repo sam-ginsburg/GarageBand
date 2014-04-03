@@ -1,11 +1,13 @@
 var TrackElement = (function() {
 	function TrackElement(element, track){
 		this.el = element;
+		this.track = track;
+		this.el.id = this.track.name
 		this.el.innerHTML = 
-		document.querySelector('#sound-template').innerHTML;
+		document.querySelector('#track-template').innerHTML;
 
 		this.track = track;
-		this.el.querySelector('.name').innerText = this.sound.name;
+		this.el.querySelector('.name').innerText = this.track.name;
 		this.el.querySelector('.name')
 		.addEventListener('click', this.name.bind(this));
 

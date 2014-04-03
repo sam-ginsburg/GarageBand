@@ -54,11 +54,11 @@ function createProject(){
 }
 
 function createTrack(){
-  var name = document.getElementById('trackName').value;
+  var n = document.getElementById('trackName').value;
   var table = document.getElementById('trackList');
   var rowCount = table.rows.length;
   var found = true;
-  var track = {name: name,
+  var track = {name: n,
     info: []};
     if(found){
      FileSystem.saveTrack(track);
