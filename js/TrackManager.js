@@ -40,10 +40,14 @@ var TrackManager =(function() {
 			FileSystem2.removeTrack(window.currentProject.name, trackName);
 		}
 
+		load: function(evt){
+		}
+
 	};
 	//window.addEventListener('track.editor', TrackManager.name.bind(TrackManager));
 	//window.addEventListener('track.play', TrackManager.play.bind(TrackManager));
 	//window.addEventListener('track.stop', TrackManager.stop.bind(TrackManager));
 	window.addEventListener('track.del', TrackManager.del.bind(TrackManager));
+	window.addEventListener('track.load', TrackManager.del.bind(TrackManager));
 	return TrackManager;
 })();
