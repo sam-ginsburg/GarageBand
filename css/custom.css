@@ -26,3 +26,13 @@ border-color: #5bc0de;
 .glyphicon-stop:hover{
   color: #DB0202;
 }
+
+.trackChanger{
+	margin-right:100px;
+}
+
+#trackCanvas{
+	background-color: #C0C0C0;
+	width: 100%;
+	height:100px;
+}
