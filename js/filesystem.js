@@ -332,7 +332,7 @@ function toGetFirstTrack(fs){
 		if(currentTrack !== undefined && currentTrack !== null){
 			window.dispatchEvent(new CustomEvent('trackChanged', {detail: currentTrack}));
 		}
-		else{
+		else{a
 
 		}
 
