@@ -37,7 +37,6 @@ var TrackManager =(function() {
 					i--;
 				}
 			}
-			console.log(window.currentProject);
 			FileSystem2.removeTrack(window.currentProject.name, trackName);
 		}
 
