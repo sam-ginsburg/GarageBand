@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Garage Band</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/custom.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="row">
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Garage Band</a>
-          </div>
+<head>
+  <title>Garage Band</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/custom.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <div class="row">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Garage Band</a>
         </div>
       </div>
-      <div class="jumbotron text-center">
-        <div class="container text-center">
-          <h1>Welcome!</h1>
-          <p>Edit your music files below</p>
-          <input type="file" id="files" name="files[]" multiple />
+    </div>
+    <div class="jumbotron text-center">
+      <div class="container text-center">
+        <h1>Welcome!</h1>
+        <p>Edit your music files below</p>
+        <input type="file" id="files" name="files[]" multiple />
           <!--<button class="play">Play</button>
           <button class="stop">Stop</button>-->
         </div>
@@ -52,7 +52,7 @@
                 <th>Load</th>
                 <th>Delete</th>
               </tr>
-             </thead>
+            </thead>
             <tbody id = "projectList">
             </tbody>
           </table>
@@ -114,17 +114,16 @@
       </div>
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
         <div id="track-display" class="bs-callout bs-callout-info">
-          <div class="panel panel-primary">
+          <div class="trackChanger panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title">Track Editor</h3>
+            </div>
+            <div id = "trackeditor" class="panel-body">
+              <canvas id = "trackCanvas">swag</canvas>
               <div id="columns">
                 <div class="column" draggable="true"><header>A</header></div>
                 <div class="column" draggable="true"><header>B</header></div>
                 <div class="column" draggable="true"><header>C</header></div>
-              </div>
-            </div>
-            <div id = "trackeditor" lass="panel-body">
-              <canvas id = "track">swag</canvas>
             </div>
           </div>
         </div>
@@ -133,25 +132,25 @@
     </div>
     
     <script id="sound-template" type="text/template">
-        <td class="name"></td>
-        <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-        <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-        <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-        <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+    <td class="name"></td>
+    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script id="project-template" type="text/template">
-        <td class="name"></td>
-        <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
-        <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+    <td class="name"></td>
+    <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
+    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
-  
+
     <script id="track-template" type="text/template">
-        <td class="name"></td>
-        <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-        <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-        <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-        <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+    <td class="name"></td>
+    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script src="js/directives/projectelement.js"></script>
