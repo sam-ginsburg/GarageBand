@@ -7,8 +7,7 @@ var TrackElement = (function() {
 
 		this.track = track;
 		this.el.querySelector('.name').innerText = this.track.name;
-		this.el.querySelector('.name')
-		.addEventListener('click', this.name.bind(this));
+		this.el.querySelector('.name').addEventListener('click', this.name.bind(this));
 
 		this.el.querySelector('.play')
 		.addEventListener('click', this.play.bind(this));

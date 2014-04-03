@@ -16,8 +16,13 @@ var TrackManager =(function() {
 		//name: --> may need a different name
 		//should populate the track editor
 
-		//play:
-		//stop:
+		play: function(evt){
+
+		},
+
+		stop: function(evt){
+
+		},
 
 		del: function(evt){
 			var table = document.getElementById("trackList");
@@ -38,9 +43,10 @@ var TrackManager =(function() {
 				}
 			}
 			FileSystem2.removeTrack(window.currentProject.name, trackName);
-		}
+		},
 
 		load: function(evt){
+			document.getElementById("panel-title").innerHTML = currentTrack.name;
 		}
 
 	};
