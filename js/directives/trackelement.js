@@ -22,10 +22,6 @@ var TrackElement = (function() {
 		.addEventListener('click', this.load.bind(this));
 	}
 
-	TrackElement.prototype.name = function() {//populate the track editor
-		window.dispatchEvent(new CustomEvent('track.editor', {detail: this.track}));
-	};
-
 	TrackElement.prototype.play = function() {
 		window.dispatchEvent(new CustomEvent('track.play', {detail: this.track}));
 	};
