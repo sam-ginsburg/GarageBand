@@ -78,6 +78,10 @@ border-color: #5bc0de;
   border-top-right-radius: 10px;
 }
 
+.column.over {
+  border: 2px dashed #000;
+}
+
 .trackChanger{
 	margin-right:100px;
 }

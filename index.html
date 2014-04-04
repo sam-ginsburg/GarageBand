@@ -120,14 +120,11 @@
               <h3><span>Track: </span><span id="track-name"></span></h3>
             </div>
             <div id = "trackeditor" class="panel-body">
-              <canvas id = "trackCanvas">
-                <div id="columns">
-                  <div class="column" draggable="true"><header>A</header></div>
-                  <div class="column" draggable="true"><header>B</header></div>
-                  <div class="column" draggable="true"><header>C</header></div>
-                </div>
-              </canvas>
-
+              <div id="columns">
+                <div class="column" draggable="true"><header>x</header></div>
+                <div class="column" draggable="true"><header>x</header></div>
+                <div class="column" draggable="true"><header>x</header></div>
+              </div>
             </div>
           </div>
         </div>
@@ -141,6 +138,7 @@
       <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
       <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
       <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <div class="column" draggable="true"><header>A</header></div>
     </script>
 
     <script id="project-template" type="text/template">
@@ -169,6 +167,7 @@
     <script src="js/filesystem.js"></script>
     <script src="js/filesystemV2.js"></script>
     <script src="js/filereader.js"></script>
+    <script src="js/drag.js"></script>
 
   </body>
   </html>
