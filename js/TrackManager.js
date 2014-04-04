@@ -46,7 +46,7 @@ var TrackManager =(function() {
 		},
 
 		load: function(evt){
-			document.getElementById("panel-title").innerHTML = currentTrack.name;
+			document.getElementById("track-name").innerHTML = currentTrack.name;
 		}
 
 	};
@@ -54,6 +54,6 @@ var TrackManager =(function() {
 	//window.addEventListener('track.play', TrackManager.play.bind(TrackManager));
 	//window.addEventListener('track.stop', TrackManager.stop.bind(TrackManager));
 	window.addEventListener('track.del', TrackManager.del.bind(TrackManager));
-	window.addEventListener('track.load', TrackManager.del.bind(TrackManager));
+	window.addEventListener('track.load', TrackManager.load.bind(TrackManager));
 	return TrackManager;
 })();
