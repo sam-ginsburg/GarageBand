@@ -114,17 +114,32 @@
       </div>
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
         <div id="track-display" class="bs-callout bs-callout-info">
+          <h1> This is where we'll put the editor for the current song </h1>
+          <div id="columns">
+            <div class="column" draggable="true"><header>A</header></div>
+            <div class="column" draggable="true"><header>B</header></div>
+            <div class="column" draggable="true"><header>C</header></div>
           <div class="trackChanger panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title">Track Editor</h3>
               <h3><span>Track: </span><span id="track-name"></span></h3>
             </div>
             <div id = "trackeditor" class="panel-body">
+<<<<<<< HEAD
               <div id="columns">
                 <div class="column" draggable="true"><header>x</header></div>
                 <div class="column" draggable="true"><header>x</header></div>
                 <div class="column" draggable="true"><header>x</header></div>
               </div>
+=======
+              <canvas id = "trackCanvas">
+                <div id="columns">
+                  <div class="column" draggable="true"><header>A</header></div>
+                  <div class="column" draggable="true"><header>B</header></div>
+                  <div class="column" draggable="true"><header>C</header></div>
+                </div>
+              </canvas>
+>>>>>>> b8ba3efa564089ae2e5be96e285b13019439acd6
             </div>
           </div>
         </div>
@@ -156,10 +171,26 @@
       <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
     </script>
 
+    <script id="track-editor-template" type="text/template">
+    <div class="trackChanger panel panel-primary">
+      <div class="panel-heading">
+        <h3 id ="trackTitle" class="panel-title">Track Editor</h3>
+          </div>
+            <div class="trackTitle panel-body">
+              <canvas id = "trackCanvas">swag</canvas>
+              <div class="timescale"></div>
+              <div class="timenumbering"></div>
+            </div>
+          </div>
+      </div>
+    </div>
+    </script>
+
     <script src="js/directives/projectelement.js"></script>
     <script src="js/directives/soundelement.js"></script>
     <script src="js/directives/trackelement.js"></script>
     <script src="js/ObservableArray.js"></script>
+    <script src="js/timeScaleEditor.js"></script>
     <script src="js/ProjectManager.js"></script>
     <script src="js/TrackManager.js"></script>
     <script src="js/AudioManager.js"></script>

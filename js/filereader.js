@@ -1,6 +1,8 @@
 var context = new window.webkitAudioContext();
 var sources = [], buffers = [];
 var audioBuffer = null;
+generateOriginalTimeScale(100);
+generateOriginalTimeNumbering(100);
 FileSystem.init();
 
 // Read in sound files and add them to the list
