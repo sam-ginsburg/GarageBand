@@ -38,6 +38,7 @@ border-color: #5bc0de;
   -webkit-user-drag: element;
 }
 .column {
+  position:relative;
   height: 150px;
   width: 150px;
   float: left;

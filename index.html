@@ -121,13 +121,13 @@
             </div>
             <div id = "trackeditor" class="panel-body">
               <canvas id = "trackCanvas">
-
+                <div id="columns">
+                  <div class="column" draggable="true"><header>A</header></div>
+                  <div class="column" draggable="true"><header>B</header></div>
+                  <div class="column" draggable="true"><header>C</header></div>
+                </div>
               </canvas>
-              <div id="columns">
-                <div class="column" draggable="true"><header>A</header></div>
-                <div class="column" draggable="true"><header>B</header></div>
-                <div class="column" draggable="true"><header>C</header></div>
-              </div>
+
             </div>
           </div>
         </div>
@@ -136,26 +136,26 @@
     </div>
     
     <script id="sound-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td class="name"></td>
+      <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+      <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+      <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script id="project-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td class="name"></td>
+      <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script id="track-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
-    <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
+      <td class="name"></td>
+      <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+      <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+      <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
     </script>
 
     <script src="js/directives/projectelement.js"></script>
