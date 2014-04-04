@@ -16,8 +16,13 @@ var TrackManager =(function() {
 		//name: --> may need a different name
 		//should populate the track editor
 
-		//play:
-		//stop:
+		play: function(evt){
+
+		},
+
+		stop: function(evt){
+
+		},
 
 		del: function(evt){
 			var table = document.getElementById("trackList");
@@ -38,9 +43,10 @@ var TrackManager =(function() {
 				}
 			}
 			FileSystem2.removeTrack(window.currentProject.name, trackName);
-		}
+		},
 
 		load: function(evt){
+			document.getElementById("track-name").innerHTML = currentTrack.name;
 		}
 
 	};
@@ -48,6 +54,6 @@ var TrackManager =(function() {
 	//window.addEventListener('track.play', TrackManager.play.bind(TrackManager));
 	//window.addEventListener('track.stop', TrackManager.stop.bind(TrackManager));
 	window.addEventListener('track.del', TrackManager.del.bind(TrackManager));
-	window.addEventListener('track.load', TrackManager.del.bind(TrackManager));
+	window.addEventListener('track.load', TrackManager.load.bind(TrackManager));
 	return TrackManager;
 })();

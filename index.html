@@ -114,11 +114,29 @@
       </div>
       <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
         <div id="track-display" class="bs-callout bs-callout-info">
+<<<<<<< HEAD
           <h1> This is where we'll put the editor for the current song </h1>
           <div id="columns">
             <div class="column" draggable="true"><header>A</header></div>
             <div class="column" draggable="true"><header>B</header></div>
             <div class="column" draggable="true"><header>C</header></div>
+=======
+          <div class="trackChanger panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Track Editor</h3>
+              <h3><span>Track: </span><span id="track-name"></span></h3>
+            </div>
+            <div id = "trackeditor" class="panel-body">
+              <canvas id = "trackCanvas">
+                <div id="columns">
+                  <div class="column" draggable="true"><header>A</header></div>
+                  <div class="column" draggable="true"><header>B</header></div>
+                  <div class="column" draggable="true"><header>C</header></div>
+                </div>
+              </canvas>
+
+            </div>
+>>>>>>> bcb6d8c6b452da21721f4e941bb1a7eab93c80c8
           </div>
         </div>
         <hr>
@@ -126,25 +144,26 @@
     </div>
     
     <script id="sound-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td class="name"></td>
+      <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+      <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+      <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script id="project-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td class="name"></td>
+      <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
     </script>
 
     <script id="track-template" type="text/template">
-    <td class="name"></td>
-    <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
-    <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
-    <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
-    <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td><button class="link name" /></td>
+      <td><button type="button" class="play glyphicon glyphicon-play-circle" /></td>
+      <td><button type="button" class="pause glyphicon glyphicon-pause" /></td>
+      <td><button type="button" class="stop glyphicon glyphicon-stop" /></td>
+      <td><button type="button" class="del glyphicon glyphicon-remove" /></td>
+      <td><button type="button" class="load glyphicon glyphicon-upload" /></td>
     </script>
 
     <script id="track-editor-template" type="text/template">
