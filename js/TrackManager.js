@@ -41,11 +41,29 @@ var TrackManager = {
 	}
 
 	stop: function(evt){
+		if(!evt || this.playing && (evt.detail === this.playing.sound)){
+			this.playing.source.stop(0);
+			index = this.paused.indexOf(this.playing.sound);
+			console.log(index);
+			if(index > -1){
+				this.paused[index].startOffset = 0;
+				console.log(this.paused[index].startOffset);
+			}
 
+			this.playing = null;
+		}
+		else if(evt.detail){
+			index = this.paused.indexOf(evt.detail);
+			console.log(index);
+			if(index > -1){
+				this.paused[index].startOffset = 0;
+				console.log(this.paused[index].startOffset);
+			}
+		}
 	},
 
-	del: function(evt){
-		var table = document.getElementById("trackList");
+	del: function(evt){ //needs to be chaged to accomidate divs
+		var table = document.getElementById("track-display");
 		var rowCount = table.rows.length;
 		var trackName;
 		if(evt.detail){

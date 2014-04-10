@@ -19,9 +19,6 @@ var SoundElement = (function() {
 
 		this.el.querySelector('.pause')
 		.addEventListener('click', this.pause.bind(this));
-
-		this.el.querySelector('.add')
-		.addEventListener('click', this.add.bind(this));
 	}
 
 	SoundElement.prototype.play = function() { // do stuff on play }
@@ -38,17 +35,6 @@ var SoundElement = (function() {
 
 	SoundElement.prototype.pause = function() { // do stuff on pause }
 		window.dispatchEvent(new CustomEvent('audio.pause', {detail: this.sound}));
-	};
-
-	SoundElement.prototype.add = function() { // do stuff on add }
-		var trackPiece = {
-			song: this.sound,
-			trackloc: document.getElementById("track-placement"),
-			start: document.getElementById("sound-start"),
-			dur: document.getElementById("duration")
-		};
-		console.log("yay");
-		window.dispatchEvent(new CustomEvent('audio.add', {detail: trackPiece}));
 	};
 
 	return SoundElement;
