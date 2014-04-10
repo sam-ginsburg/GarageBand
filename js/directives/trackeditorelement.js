@@ -1,11 +1,13 @@
 var TrackEditorElement = (function() {
-	function TrackEditorElement(element, track){
+	function TrackEditorElement(element, track, name){
+
 		this.el = element;
 		this.track = track;
-		this.el.id = this.track.name;
+		this.name = name;
 		this.el.innerHTML = document.querySelector('#track-editor-template').innerHTML;
 
-		this.track = track;
+		this.header = this.el.querySelector('.panel-title');
+		this.header.innerHTML = this.name;
 		// this.el.querySelector('.trackTitle').innerText = this.track.name;
 
 		this.timescale = this.el.querySelector('.timescale');

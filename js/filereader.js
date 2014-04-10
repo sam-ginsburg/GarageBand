@@ -1,6 +1,7 @@
 var context = new window.webkitAudioContext();
 var sources = [], buffers = [];
 var audioBuffer = null;
+var firstload = true;
 FileSystem.init();
 
 // Read in sound files and add them to the list
@@ -39,6 +40,8 @@ function createProject(){
   var name = document.getElementById('projectName').value;
   var table = document.getElementById('projectList');
   var rowCount = table.rows.length;
+    var trackTable = document.getElementById('track-display');
+  trackTable.innerHTML = "";
 
   for(var i=0; i<rowCount; i++) {
     var row = table.rows[i];
@@ -46,7 +49,6 @@ function createProject(){
     rowCount--;
     i--;
   }
-  console.log("great");
   window.currentProject = name;
   var projectName = document.getElementById("currentProject");
   projectName.innerHTML = "";
@@ -55,6 +57,7 @@ function createProject(){
 }
 
 function createTrack(){
+
   var n = document.getElementById('trackName').value;
   var table = document.getElementById('trackList');
   var rowCount = table.rows.length;
@@ -86,24 +89,31 @@ function loadFromFileSystem(evt) {
   initColumns();
 }
 
-function showTracksFromFileSystem() {
-  var table = document.getElementById('track-display');
-  var i = 0;
-  for (i = 0;i <3; i++) {
-        var el = document.createElement('div');
-        new TrackEditorElement(el, "swag");
-        table.appendChild(el);
-  }
-}
+// function showTracksFromFileSystem() {
+//   for( var project in ProjectManager.project_hash){
+//     console.log(FileSystem2.getAllTracks(project));
+//   }
+//   var table = document.getElementById('track-display');
+//   var i = 0;
+//   for (i = 0;i <3; i++) {
+//         var el = document.createElement('div');
+//         new TrackEditorElement(el, "swag");
+//         table.appendChild(el);
+//   }
+// }
 
 function getProject(name){
   FileSystem.createProject(name);
   FileSystem.getProject(name);
-
 }
 
 function loadProjectsFromFileSystem(evt){
   var projects = evt.detail;
+  if(firstload){
+    var header = document.getElementById('currentProject');
+    header.innerHTML = "Current Project: " + evt.detail[0];
+    firstload = false;
+  }
   var table = document.getElementById('projectList');
   for (var index in projects) {
     (function(project) {
@@ -115,15 +125,26 @@ function loadProjectsFromFileSystem(evt){
 }
 
 function loadTracksFromFileSystem(evt){
-  var tracks = evt.detail; // FileList object
-  // files is a FileList of File objects. List some properties.
-  var table = document.getElementById('trackList');
-  for (var index in tracks) {
-    (function(file) {
-      var el = document.createElement('tr');
-      new TrackElement(el, file);
-      table.appendChild(el);
-    })(tracks[index]);
+  // var tracks = evt.detail; // FileList object
+  // // files is a FileList of File objects. List some properties.
+  // var table = document.getElementById('trackList');
+  // for (var index in tracks) {
+  //   (function(file) {
+  //     var el = document.createElement('tr');
+  //     new TrackElement(el, file);
+  //     table.appendChild(el);
+  //   })(tracks[index]);
+  // }
+
+  var tracks = evt.detail;
+
+  var table = document.getElementById('track-display');
+  table.innerHTML = "";
+  var i = 0;
+  for (i = 0;i <tracks.length; i++) {
+        var el = document.createElement('div');
+        new TrackEditorElement(el, "test",tracks[i].name);
+        table.appendChild(el);
   }
 }
 
