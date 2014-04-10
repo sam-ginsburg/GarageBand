@@ -32,6 +32,7 @@ function handleFileSelect(evt) {
     })(f);
     reader.readAsArrayBuffer(f);
   }
+  initColumns();
 }
 
 function createProject(){
@@ -61,11 +62,12 @@ function createTrack(){
   var track = {name: n,
     info: []};
     if(found){
-     FileSystem.saveTrack(track);
-   }
-   var el = document.createElement('tr');
-   new TrackElement(el, track);
-   table.appendChild(el);
+      FileSystem.saveTrack(track);
+    }
+  var el = document.createElement('tr');
+  new TrackElement(el, track);
+  table.appendChild(el);
+  initColumns();
  }
 
 function loadFromFileSystem(evt) {
@@ -81,6 +83,7 @@ function loadFromFileSystem(evt) {
       });
     })(arrayAndName[index]);
   }
+  initColumns();
 }
 
 function showTracksFromFileSystem() {
