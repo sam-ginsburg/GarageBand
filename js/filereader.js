@@ -1,8 +1,6 @@
 var context = new window.webkitAudioContext();
 var sources = [], buffers = [];
 var audioBuffer = null;
-generateOriginalTimeScale(100);
-generateOriginalTimeNumbering(100);
 FileSystem.init();
 
 // Read in sound files and add them to the list
@@ -70,7 +68,7 @@ function createTrack(){
    table.appendChild(el);
  }
 
- function loadFromFileSystem(evt) {
+function loadFromFileSystem(evt) {
   var arrayAndName = evt.detail;
   var table = document.getElementById('songList');
   for (var index in arrayAndName) {
@@ -82,6 +80,16 @@ function createTrack(){
         table.appendChild(el);
       });
     })(arrayAndName[index]);
+  }
+}
+
+function showTracksFromFileSystem() {
+  var table = document.getElementById('track-display');
+  var i = 0;
+  for (i = 0;i <3; i++) {
+        var el = document.createElement('div');
+        new TrackEditorElement(el, "swag");
+        table.appendChild(el);
   }
 }
 
