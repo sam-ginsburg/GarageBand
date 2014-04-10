@@ -3,8 +3,7 @@ var SoundElement = (function() {
 		this.el = element;
 		this.sound = sound;
 		this.el.id = this.sound.name;
-		this.el.innerHTML = 
-		document.querySelector('#sound-template').innerHTML;
+		this.el.innerHTML = document.querySelector('#sound-template').innerHTML;
 
 		this.el.querySelector('.name').innerText = this.sound.name;
 
