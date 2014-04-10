@@ -1,6 +1,5 @@
 var TrackEditorElement = (function() {
 	function TrackEditorElement(element, track){
-		console.log(element);
 		this.el = element;
 		this.track = track;
 		this.el.id = this.track.name;
@@ -13,9 +12,23 @@ var TrackEditorElement = (function() {
 		
 		for(i = 0; i < 100; i++){
 			var el = document.createElement('div');
-			el.class = 'timeSegment';
+			el.className = 'timeSegment';
 			this.timescale.appendChild(el);
 		}
+
+		this.timeNumbering = this.el.querySelector('.timenumbering');
+		var i = 0;
+		var counter = 0;
+		var adder = "";
+
+		for(i = 0; i < 100; i++){
+		if(i%20==0||i==(100-1)){
+			adder=counter;
+			counter++;
+		}
+		this.timeNumbering.innerHTML+="<div class='timeNumber'>"+adder+"</div>";
+		adder="";
+	}
 	}
 
 	TrackEditorElement.prototype.name = function() {//populate the track editor
