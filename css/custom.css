@@ -31,6 +31,15 @@ border-color: #5bc0de;
 	float: left;
 }
 
+.greyline{
+  border: 1px solid #F2F2F2;
+  border-top: none;
+  width:10px;
+  height:200px;
+  margin-top:1px;
+  float: left;
+}
+
 .timeNumber{
 	width:10px;
 	height:10px;
