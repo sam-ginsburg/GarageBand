@@ -18,9 +18,6 @@ var SoundElement = (function() {
 
 		this.el.querySelector('.pause')
 		.addEventListener('click', this.pause.bind(this));
-
-		// this.el.querySelector('.add')
-		// .addEventListener('click', this.add.bind(this));
 	}
 
 	SoundElement.prototype.play = function() { // do stuff on play }

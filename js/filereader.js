@@ -59,8 +59,6 @@ function createProject(){
 function createTrack(){
 
   var n = document.getElementById('trackName').value;
- // var table = document.getElementById('trackList');
-  //var rowCount = table.rows.length;
   var found = true;
   var track = {name: n,
     info: []};
@@ -73,11 +71,6 @@ function createTrack(){
   var el = document.createElement('div');
   new TrackEditorElement(el, "test",n);
   table.appendChild(el);
-
- // var el = document.createElement('tr');
- // new TrackElement(el, track);
-  //table.appendChild(el);
-  //initColumns();
  }
 
 function loadFromFileSystem(evt) {
