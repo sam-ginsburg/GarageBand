@@ -59,18 +59,25 @@ function createProject(){
 function createTrack(){
 
   var n = document.getElementById('trackName').value;
-  var table = document.getElementById('trackList');
-  var rowCount = table.rows.length;
+ // var table = document.getElementById('trackList');
+  //var rowCount = table.rows.length;
   var found = true;
   var track = {name: n,
     info: []};
     if(found){
       FileSystem.saveTrack(track);
     }
-  var el = document.createElement('tr');
-  new TrackElement(el, track);
+
+  var table = document.getElementById('track-display');
+  var i = 0;
+  var el = document.createElement('div');
+  new TrackEditorElement(el, "test",n);
   table.appendChild(el);
-  initColumns();
+
+ // var el = document.createElement('tr');
+ // new TrackElement(el, track);
+  //table.appendChild(el);
+  //initColumns();
  }
 
 function loadFromFileSystem(evt) {
