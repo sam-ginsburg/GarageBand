@@ -25,10 +25,19 @@ border-color: #5bc0de;
 .timeSegment{
 	border: 1px solid black;
 	border-top: none;
-	width:10px;
+	width:1%;
 	height:10px;
 	margin-top:1px;
 	float: left;
+}
+
+.greyline{
+  border: 1px solid #F2F2F2;
+  border-top: none;
+  width:1%;
+  height:200px;
+  margin-top:1px;
+  float: left;
 }
 
 .timeNumber{

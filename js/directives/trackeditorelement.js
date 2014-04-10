@@ -9,6 +9,12 @@ var TrackEditorElement = (function() {
 		this.header = this.el.querySelector('.panel-title');
 		this.header.innerHTML = this.name;
 		// this.el.querySelector('.trackTitle').innerText = this.track.name;
+		this.greyLines = this.el.querySelector('.greyLines');
+				for(i = 0; i < 100; i++){
+			var el = document.createElement('div');
+			el.className = 'greyline';
+			this.greyLines.appendChild(el);
+		}
 
 		this.timescale = this.el.querySelector('.timescale');
 		

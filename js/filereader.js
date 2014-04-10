@@ -28,12 +28,12 @@ function handleFileSelect(evt) {
             var el = document.createElement('tr');
             new SoundElement(el, sound);
             table.appendChild(el);
+            initColumns();
           });
       };
     })(f);
     reader.readAsArrayBuffer(f);
   }
-  initColumns();
 }
 
 function createProject(){
@@ -83,10 +83,10 @@ function loadFromFileSystem(evt) {
         var el = document.createElement('tr');
         new SoundElement(el, file);
         table.appendChild(el);
+          initColumns();
       });
     })(arrayAndName[index]);
   }
-  initColumns();
 }
 
 // function showTracksFromFileSystem() {
@@ -120,6 +120,7 @@ function loadProjectsFromFileSystem(evt){
       var el = document.createElement('tr');
       new ProjectElement(el, project);
       table.appendChild(el);
+
     })(projects[index]);
   }
 }
