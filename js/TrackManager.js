@@ -19,16 +19,27 @@ var TrackManager = {
 	//should populate the track editor
 
 	play: function(evt){
+		var sampleRate = 44100;
 		var songPieces = evt.detail.info;
-		var trackBuffer = context.createBuffer(2,0,44100);
+		var trackLength = songPieces.reduce(function() {
+			return acc += value.dur;
+		},0);
+		var trackBuffer = context.createBuffer(1,sampleRate*trackLength,sampleRate);
+
+		var curLocation = 0;
+		var curBuffer;
+
 		for(var i=0; i<songPieces.length; i++){
 			if(songPieces[i].song === null){
 				var dur = songPieces[i].dur;
-				trackBuffer.getChannelData(0).set(context.createBuffer(2,(dur*44100),44100));
+				curLocation += dur * sampleRate;
 			}
 			else{
-				var subBuffer = songPieces[i].song.audio.slice() 
-				//need to splice by start/stop time but do not know how to convert to bytes
+				var startTime = songPieces[i].start * sampleRate;
+				var duration = songPieces[i].dur * sampleRate;
+				curBuffer = songPieces[i].song.audio.subarray(startTime, startTime + duration);
+				trackBuffer.getChannelData(0).set(curLocation * sampleRate, curBuffer);
+				curLocation += duration;
 			}
 		}
 
@@ -89,7 +100,7 @@ var TrackManager = {
 
 };
 //window.addEventListener('track.editor', TrackManager.name.bind(TrackManager));
-//window.addEventListener('track.play', TrackManager.play.bind(TrackManager));
+window.addEventListener('track.play', TrackManager.play.bind(TrackManager));
 //window.addEventListener('track.stop', TrackManager.stop.bind(TrackManager));
 window.addEventListener('track.del', TrackManager.del.bind(TrackManager));
 window.addEventListener('track.load', TrackManager.load.bind(TrackManager));
