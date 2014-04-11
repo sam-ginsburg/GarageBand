@@ -15,12 +15,12 @@ var AudioManager = (function() {
 			var source = context.createBufferSource();
 
 			if(index > -1){
-				source.buffer = this.paused[index].audio;
+				source.buffer = this.paused[index].buffer;
 				source.startOffset = this.paused[index].startOffset;
 				console.log("offset " + source.startOffset);
 			}
 			else{
-				source.buffer = soundToPlay.audio;
+				source.buffer = soundToPlay.buffer;
 				soundToPlay.startOffset = 0;
 				console.log(0);
 			}

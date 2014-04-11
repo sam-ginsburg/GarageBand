@@ -1,4 +1,5 @@
-var cols = document.querySelectorAll('.column');
+// var cols = document.querySelectorAll('.column');
+var cols = document.querySelectorAll('.greyline');
 
 function handleDragOver(e) {
   if (e.preventDefault) {
@@ -30,6 +31,11 @@ function handleDrop(e) {
   if (dragSrcEl != this) {
     // Set the source column's HTML to the HTML of the column we dropped on.
     dragSrcEl.innerHTML = this.innerHTML;
+    this.style.width = dragSrcEl.style.width;
+    console.log(dragSrcEl);
+    console.log(dragSrcEl.style);
+    console.log(this);
+    console.log(this.style);
     this.innerHTML = e.dataTransfer.getData('text/html');
   }
 
@@ -38,7 +44,8 @@ function handleDrop(e) {
 
 function handleDragEnd(e) {
   // this/e.target is the source node.
-  cols = document.querySelectorAll('.column');
+  // cols = document.querySelectorAll('.column');
+  cols = document.querySelectorAll('.greyline');
 
   [].forEach.call(cols, function (col) {
     col.classList.remove('over');
@@ -47,7 +54,8 @@ function handleDragEnd(e) {
 }
 
 function initColumns(){
-  cols = document.querySelectorAll('.column');
+  // cols = document.querySelectorAll('.column');
+  cols = document.querySelectorAll('.greyline');
   console.log(cols);
   [].forEach.call(cols, function(col) {
     col.addEventListener('dragstart', handleDragStart, false);

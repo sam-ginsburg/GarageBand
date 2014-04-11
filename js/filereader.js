@@ -79,7 +79,7 @@ function loadFromFileSystem(evt) {
   for (var index in arrayAndName) {
     (function(file) {
       context.decodeAudioData(file.buffer, function(audio) {
-        file.audio = audio;
+        file.buffer = audio;
         var el = document.createElement('tr');
         new SoundElement(el, file);
         table.appendChild(el);
