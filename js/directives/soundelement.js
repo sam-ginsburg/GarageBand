@@ -36,5 +36,16 @@ var SoundElement = (function() {
 		window.dispatchEvent(new CustomEvent('audio.pause', {detail: this.sound}));
 	};
 
+	// SoundElement.prototype.add = function() { // do stuff on add }
+	// 	var trackPiece = {
+	// 		song: this.sound,
+	// 		trackloc: document.getElementById("track-placement"),
+	// 		start: document.getElementById("sound-start"),
+	// 		dur: document.getElementById("duration")
+	// 	};
+	// 	console.log("yay");
+	// 	window.dispatchEvent(new CustomEvent('audio.add', {detail: trackPiece}));
+	// };
+
 	return SoundElement;
 })();
