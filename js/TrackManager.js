@@ -43,10 +43,8 @@ var TrackManager = {
 			}
 		}
 
-		if(this.playing){
-			this.stop();
-		}
-		var source = context.createBufferSource();
+		
+		window.dispatchEvent(new CustomEvent('track.play', {detail: trackBuffer}));
 
 		//should be the same as playing any buffer
 	}
